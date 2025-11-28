@@ -3,7 +3,10 @@ export interface Post {
   slug: string;
   title: string;
   content: string;
+  author?: string;
+  author_id?: string;
   is_published: boolean;
+  is_approved: boolean;
   created_at: string;
   average_rating?: number;
   total_ratings?: number;

@@ -12,12 +12,24 @@ html {
   @apply text-2xl font-bold text-gray-900 mt-10 mb-4 pb-2 border-b border-gray-200;
 }
 
+.dark .prose h2 {
+  @apply text-gray-100 border-gray-700;
+}
+
 .prose h3 {
   @apply text-xl font-semibold text-gray-800 mt-8 mb-3;
 }
 
+.dark .prose h3 {
+  @apply text-gray-200;
+}
+
 .prose p {
   @apply text-gray-700 leading-relaxed mb-4;
+}
+
+.dark .prose p {
+  @apply text-gray-300;
 }
 
 .prose ul, .prose ol {
@@ -28,10 +40,87 @@ html {
   @apply mb-2 text-gray-700;
 }
 
+.dark .prose li {
+  @apply text-gray-300;
+}
+
 .prose strong {
   @apply font-semibold text-gray-900;
 }
 
+.dark .prose strong {
+  @apply text-gray-100;
+}
+
 .prose blockquote {
   @apply border-l-4 border-indigo-500 pl-4 italic text-gray-600 my-6;
+}
+
+.dark .prose blockquote {
+  @apply text-gray-400;
+}
+
+/* Reading Mode Styles */
+.reading-mode main {
+  @apply max-w-3xl;
+}
+
+.reading-mode .prose {
+  @apply text-lg leading-loose;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.reading-mode .prose p {
+  @apply text-xl leading-loose mb-6;
+}
+
+.reading-mode .prose h2 {
+  @apply text-3xl mb-6;
+}
+
+.reading-mode .prose h3 {
+  @apply text-2xl mb-4;
+}
+
+/* Rich Text Editor Dark Mode Styles */
+.dark .ProseMirror {
+  @apply text-gray-100;
+  caret-color: white;
+}
+
+.dark .ProseMirror p {
+  @apply text-gray-200;
+}
+
+.dark .ProseMirror h1,
+.dark .ProseMirror h2,
+.dark .ProseMirror h3 {
+  @apply text-gray-100;
+}
+
+.dark .ProseMirror ul,
+.dark .ProseMirror ol {
+  @apply text-gray-200;
+}
+
+.dark .ProseMirror blockquote {
+  @apply border-indigo-400 text-gray-300;
+}
+
+.dark .ProseMirror a {
+  @apply text-indigo-400;
+}
+
+.dark .ProseMirror hr {
+  @apply border-gray-600;
+}
+
+.dark .ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-gray-500;
+}
+
+/* Placeholder styling */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: 'Start writing your article...';
+  @apply text-gray-400 float-left h-0 pointer-events-none;
 }

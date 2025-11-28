@@ -99,14 +99,14 @@ const ColorPicker = ({ editor, type }: { editor: any; type: 'text' | 'highlight'
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`p-2 rounded hover:bg-gray-200 flex items-center gap-1 ${editor.isActive('highlight') ? 'bg-yellow-100' : ''}`}
+          className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1 ${editor.isActive('highlight') ? 'bg-yellow-100 dark:bg-yellow-900' : ''}`}
           title="Highlight Color"
         >
-          <span className="w-4 h-4 bg-yellow-200 border border-gray-300 rounded"></span>
-          <span className="text-xs">▼</span>
+          <span className="w-4 h-4 bg-yellow-200 border border-gray-300 dark:border-gray-600 rounded"></span>
+          <span className="text-xs dark:text-gray-300">▼</span>
         </button>
         {isOpen && (
-          <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-50">
+          <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg p-2 z-50">
             <div className="flex gap-1 mb-2">
               {highlightColors.map((h) => (
                 <button
@@ -116,7 +116,7 @@ const ColorPicker = ({ editor, type }: { editor: any; type: 'text' | 'highlight'
                     editor.chain().focus().toggleHighlight({ color: h.color }).run();
                     setIsOpen(false);
                   }}
-                  className="w-6 h-6 rounded border border-gray-300 hover:scale-110 transition-transform"
+                  className="w-6 h-6 rounded border border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform"
                   style={{ backgroundColor: h.color }}
                   title={h.name}
                 />
@@ -128,7 +128,7 @@ const ColorPicker = ({ editor, type }: { editor: any; type: 'text' | 'highlight'
                 editor.chain().focus().unsetHighlight().run();
                 setIsOpen(false);
               }}
-              className="text-xs text-gray-500 hover:text-gray-700"
+              className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             >
               Remove highlight
             </button>
@@ -143,19 +143,19 @@ const ColorPicker = ({ editor, type }: { editor: any; type: 'text' | 'highlight'
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded hover:bg-gray-200 flex items-center gap-1"
+        className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1"
         title="Text Color"
       >
-        <span className="font-bold text-sm">A</span>
+        <span className="font-bold text-sm dark:text-gray-200">A</span>
         <span 
           className="w-4 h-1 rounded"
           style={{ backgroundColor: editor.getAttributes('textStyle').color || '#000000' }}
         ></span>
-        <span className="text-xs">▼</span>
+        <span className="text-xs dark:text-gray-300">▼</span>
       </button>
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50">
-          <p className="text-xs text-gray-500 mb-2">Theme Colors</p>
+        <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg p-3 z-50">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Theme Colors</p>
           <div className="space-y-1">
             {colorPalette.map((row, rowIndex) => (
               <div key={rowIndex} className="flex gap-1">
@@ -167,7 +167,7 @@ const ColorPicker = ({ editor, type }: { editor: any; type: 'text' | 'highlight'
                       editor.chain().focus().setColor(color).run();
                       setIsOpen(false);
                     }}
-                    className="w-5 h-5 rounded border border-gray-300 hover:scale-110 transition-transform"
+                    className="w-5 h-5 rounded border border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform"
                     style={{ backgroundColor: color }}
                     title={color}
                   />
@@ -175,8 +175,8 @@ const ColorPicker = ({ editor, type }: { editor: any; type: 'text' | 'highlight'
               </div>
             ))}
           </div>
-          <div className="mt-2 pt-2 border-t border-gray-200">
-            <label className="text-xs text-gray-500 flex items-center gap-2">
+          <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+            <label className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
               Custom:
               <input
                 type="color"
@@ -211,9 +211,9 @@ const MenuBar = ({ editor }: { editor: any }) => {
   if (!editor) return null;
 
   return (
-    <div className="border-b border-gray-200 bg-gray-50 rounded-t-lg">
+    <div className="border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 rounded-t-lg">
       {/* Top Row - Font controls */}
-      <div className="flex flex-wrap items-center gap-1 p-2 border-b border-gray-100">
+      <div className="flex flex-wrap items-center gap-1 p-1.5 sm:p-2 border-b border-gray-100 dark:border-gray-700">
         {/* Font Size Dropdown */}
         <select
           onChange={(e) => {
@@ -221,7 +221,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
               (editor.commands as any).setFontSize(e.target.value);
             }
           }}
-          className="px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:bg-gray-50 cursor-pointer"
+          className="px-1.5 sm:px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs sm:text-sm bg-white dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
           title="Font Size"
         >
           <option value="">Size</option>
@@ -247,16 +247,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
             editor.isActive('heading', { level: 2 }) ? '2' :
             editor.isActive('heading', { level: 3 }) ? '3' : 'p'
           }
-          className="px-2 py-1 border border-gray-300 rounded text-sm bg-white hover:bg-gray-50 cursor-pointer"
+          className="px-1.5 sm:px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs sm:text-sm bg-white dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
           title="Text Style"
         >
           <option value="p">Normal</option>
-          <option value="1">Heading 1</option>
-          <option value="2">Heading 2</option>
-          <option value="3">Heading 3</option>
+          <option value="1">H1</option>
+          <option value="2">H2</option>
+          <option value="3">H3</option>
         </select>
 
-        <div className="w-px h-6 bg-gray-300 mx-1"></div>
+        <div className="w-px h-5 sm:h-6 bg-gray-300 dark:bg-gray-600 mx-0.5 sm:mx-1 hidden sm:block"></div>
 
         {/* Increase/Decrease Font Size */}
         <button
@@ -266,7 +266,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             const current = parseInt(currentSize) || 16;
             (editor.commands as any).setFontSize(`${Math.max(8, current - 2)}px`);
           }}
-          className="p-2 rounded hover:bg-gray-200"
+          className="p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 hidden sm:block"
           title="Decrease Font Size"
         >
           <span className="text-xs font-bold">A</span>↓
@@ -278,7 +278,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             const current = parseInt(currentSize) || 16;
             (editor.commands as any).setFontSize(`${Math.min(72, current + 2)}px`);
           }}
-          className="p-2 rounded hover:bg-gray-200"
+          className="p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 hidden sm:block"
           title="Increase Font Size"
         >
           <span className="text-lg font-bold">A</span>↑
@@ -286,13 +286,13 @@ const MenuBar = ({ editor }: { editor: any }) => {
       </div>
 
       {/* Bottom Row - Formatting */}
-      <div className="flex flex-wrap items-center gap-1 p-2">
+      <div className="flex flex-wrap items-center gap-0.5 sm:gap-1 p-1.5 sm:p-2">
         {/* Text Style Group */}
-        <div className="flex items-center gap-1 border-r border-gray-300 pr-2 mr-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 border-r border-gray-300 dark:border-gray-600 pr-1 sm:pr-2 mr-0.5 sm:mr-1">
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-2 rounded hover:bg-gray-200 font-bold ${editor.isActive('bold') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 font-bold text-sm ${editor.isActive('bold') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Bold (Ctrl+B)"
           >
             B
@@ -300,7 +300,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-2 rounded hover:bg-gray-200 italic ${editor.isActive('italic') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 italic text-sm ${editor.isActive('italic') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Italic (Ctrl+I)"
           >
             I
@@ -308,7 +308,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`p-2 rounded hover:bg-gray-200 underline ${editor.isActive('underline') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 underline text-sm ${editor.isActive('underline') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Underline (Ctrl+U)"
           >
             U
@@ -316,7 +316,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-2 rounded hover:bg-gray-200 line-through ${editor.isActive('strike') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 line-through text-sm hidden sm:block ${editor.isActive('strike') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Strikethrough"
           >
             S
@@ -324,17 +324,17 @@ const MenuBar = ({ editor }: { editor: any }) => {
         </div>
 
         {/* Color Group */}
-        <div className="flex items-center gap-1 border-r border-gray-300 pr-2 mr-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 border-r border-gray-300 dark:border-gray-600 pr-1 sm:pr-2 mr-0.5 sm:mr-1">
           <ColorPicker editor={editor} type="text" />
           <ColorPicker editor={editor} type="highlight" />
         </div>
 
-        {/* Alignment Group */}
-        <div className="flex items-center gap-1 border-r border-gray-300 pr-2 mr-1">
+        {/* Alignment Group - Hidden on small screens */}
+        <div className="hidden sm:flex items-center gap-1 border-r border-gray-300 dark:border-gray-600 pr-2 mr-1">
           <button
             type="button"
             onClick={() => editor.chain().focus().setTextAlign('left').run()}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive({ textAlign: 'left' }) ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor.isActive({ textAlign: 'left' }) ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Align Left"
           >
             ☰
@@ -342,7 +342,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().setTextAlign('center').run()}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive({ textAlign: 'center' }) ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor.isActive({ textAlign: 'center' }) ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Align Center"
           >
             ≡
@@ -350,7 +350,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().setTextAlign('right').run()}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive({ textAlign: 'right' }) ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 ${editor.isActive({ textAlign: 'right' }) ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Align Right"
           >
             ☰
@@ -358,11 +358,11 @@ const MenuBar = ({ editor }: { editor: any }) => {
         </div>
 
         {/* Lists Group */}
-        <div className="flex items-center gap-1 border-r border-gray-300 pr-2 mr-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 border-r border-gray-300 dark:border-gray-600 pr-1 sm:pr-2 mr-0.5 sm:mr-1">
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive('bulletList') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-sm ${editor.isActive('bulletList') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Bullet List"
           >
             • ≡
@@ -370,7 +370,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive('orderedList') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-sm ${editor.isActive('orderedList') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : 'dark:text-gray-200'}`}
             title="Numbered List"
           >
             1. ≡
@@ -378,11 +378,11 @@ const MenuBar = ({ editor }: { editor: any }) => {
         </div>
 
         {/* Link & Quote Group */}
-        <div className="flex items-center gap-1 border-r border-gray-300 pr-2 mr-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 border-r border-gray-300 dark:border-gray-600 pr-1 sm:pr-2 mr-0.5 sm:mr-1">
           <button
             type="button"
             onClick={setLink}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive('link') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-sm ${editor.isActive('link') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : ''}`}
             title="Insert Link"
           >
             🔗
@@ -390,7 +390,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`p-2 rounded hover:bg-gray-200 ${editor.isActive('blockquote') ? 'bg-indigo-100 text-indigo-700' : ''}`}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-sm hidden sm:block ${editor.isActive('blockquote') ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300' : ''}`}
             title="Quote"
           >
             ❝
@@ -398,7 +398,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <button
             type="button"
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            className="p-2 rounded hover:bg-gray-200"
+            className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 dark:text-gray-200"
             title="Horizontal Line"
           >
             ―
@@ -411,7 +411,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             type="button"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
-            className="p-2 rounded hover:bg-gray-200 disabled:opacity-30"
+            className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 dark:text-gray-200 disabled:opacity-30"
             title="Undo (Ctrl+Z)"
           >
             ↩
@@ -420,7 +420,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             type="button"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
-            className="p-2 rounded hover:bg-gray-200 disabled:opacity-30"
+            className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 dark:text-gray-200 disabled:opacity-30"
             title="Redo (Ctrl+Y)"
           >
             ↪
@@ -460,7 +460,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-lg max-w-none p-4 min-h-[400px] focus:outline-none',
+        class: 'prose prose-lg max-w-none p-4 min-h-[400px] focus:outline-none dark:prose-invert dark:text-gray-100',
       },
       handlePaste: (view, event, slice) => {
         const clipboardData = event.clipboardData;
@@ -538,10 +538,10 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   }, []);
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} className="min-h-[400px]" />
-      <div className="border-t border-gray-100 bg-gray-50 px-4 py-2 text-xs text-gray-500 flex justify-between">
+      <EditorContent editor={editor} className="min-h-[400px] bg-white dark:bg-gray-800" />
+      <div className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-xs text-gray-500 dark:text-gray-400 flex justify-between">
         <span>💡 Tip: Paste your text and it will auto-format headings and lists</span>
         <span>Word count: {editor?.storage.characterCount?.words?.() || 0}</span>
       </div>

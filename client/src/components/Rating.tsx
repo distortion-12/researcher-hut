@@ -70,7 +70,7 @@ export default function Rating({ postId }: RatingProps) {
         onMouseEnter={() => user && setHoveredRating(index)}
         onMouseLeave={() => setHoveredRating(0)}
         disabled={!user || submitting}
-        className={`text-2xl transition-all ${
+        className={`text-xl sm:text-2xl transition-all ${
           user ? 'cursor-pointer hover:scale-110' : 'cursor-default'
         } ${submitting ? 'opacity-50' : ''}`}
       >
@@ -81,37 +81,37 @@ export default function Rating({ postId }: RatingProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 animate-pulse">
-        <div className="h-8 w-32 bg-gray-200 rounded"></div>
+      <div className="flex items-center gap-2">
+        <div className="h-6 sm:h-8 w-24 sm:w-32 glass rounded-xl shimmer"></div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="card-glass rounded-xl sm:rounded-2xl p-4 sm:p-6 hover-float">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h4 className="font-semibold text-gray-900 mb-1">Rate this article</h4>
-          <div className="flex items-center gap-1">
+          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-sm sm:text-base">Rate this article</h4>
+          <div className="flex items-center gap-0.5 sm:gap-1">
             {[1, 2, 3, 4, 5].map((i) => renderStar(i))}
           </div>
           {!user && (
-            <p className="text-sm text-gray-400 mt-1">
-              <a href="/login" className="text-indigo-600 hover:underline">Sign in</a> to rate
+            <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mt-1">
+              <a href="/login" className="text-indigo-600 dark:text-indigo-400 hover:underline">Sign in</a> to rate
             </p>
           )}
           {userRating > 0 && (
-            <p className="text-sm text-green-600 mt-1">
+            <p className="text-xs sm:text-sm text-green-600 dark:text-green-400 mt-1">
               ✓ You rated this {userRating} star{userRating > 1 ? 's' : ''}
             </p>
           )}
         </div>
 
-        <div className="text-center sm:text-right">
-          <div className="text-3xl font-bold text-indigo-600">
+        <div className="text-left sm:text-center sm:text-right">
+          <div className="text-2xl sm:text-3xl font-bold gradient-text">
             {averageRating.toFixed(1)}
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             {totalRatings} rating{totalRatings !== 1 ? 's' : ''}
           </div>
         </div>

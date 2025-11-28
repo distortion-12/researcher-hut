@@ -85,14 +85,14 @@ export default function ResetCredentialsPage() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md border-2 border-indigo-100">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">🔑</span>
+    <div className="min-h-[70vh] flex items-center justify-center px-4 sm:px-0 py-4 sm:py-0">
+      <div className="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 w-full max-w-md">
+        <div className="text-center mb-5 sm:mb-8">
+          <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 pulse-glow">
+            <span className="text-2xl sm:text-3xl">🔑</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Reset Credentials</h1>
-          <p className="text-gray-500 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold gradient-text">Reset Credentials</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 text-sm sm:text-base">
             {step === 'email' && 'Enter admin email to receive OTP'}
             {step === 'otp' && 'Enter the OTP sent to your email'}
             {step === 'newCredentials' && 'Set your new username and password'}
@@ -100,59 +100,59 @@ export default function ResetCredentialsPage() {
         </div>
 
         {/* Progress Steps */}
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+        <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+          <div className={`w-7 sm:w-8 h-7 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold ${
             step === 'email' ? 'bg-orange-500 text-white' : 'bg-green-500 text-white'
           }`}>
             {step === 'email' ? '1' : '✓'}
           </div>
-          <div className={`w-12 h-1 ${step !== 'email' ? 'bg-green-500' : 'bg-gray-200'}`} />
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-            step === 'otp' ? 'bg-orange-500 text-white' : step === 'newCredentials' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'
+          <div className={`w-8 sm:w-12 h-1 rounded ${step !== 'email' ? 'bg-green-500' : 'glass'}`} />
+          <div className={`w-7 sm:w-8 h-7 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold ${
+            step === 'otp' ? 'bg-orange-500 text-white' : step === 'newCredentials' ? 'bg-green-500 text-white' : 'glass text-gray-500 dark:text-gray-400'
           }`}>
             {step === 'newCredentials' ? '✓' : '2'}
           </div>
-          <div className={`w-12 h-1 ${step === 'newCredentials' ? 'bg-green-500' : 'bg-gray-200'}`} />
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-            step === 'newCredentials' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-500'
+          <div className={`w-8 sm:w-12 h-1 rounded ${step === 'newCredentials' ? 'bg-green-500' : 'glass'}`} />
+          <div className={`w-7 sm:w-8 h-7 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold ${
+            step === 'newCredentials' ? 'bg-orange-500 text-white' : 'glass text-gray-500 dark:text-gray-400'
           }`}>
             3
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm">
+          <div className="glass bg-red-500/10 text-red-600 dark:text-red-400 p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 text-sm border border-red-200 dark:border-red-800">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-green-50 text-green-600 p-4 rounded-lg mb-6 text-sm">
+          <div className="glass bg-green-500/10 text-green-600 dark:text-green-400 p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 text-sm border border-green-200 dark:border-green-800">
             {success}
           </div>
         )}
 
         {/* Step 1: Email */}
         {step === 'email' && (
-          <form onSubmit={handleSendOtp} className="space-y-5">
+          <form onSubmit={handleSendOtp} className="space-y-4 sm:space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Admin Email</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Admin Email</label>
               <input
                 type="email"
                 required
                 placeholder="your-admin-email@example.com"
-                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                className="w-full p-2.5 sm:p-3 input-glass rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm sm:text-base"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              {adminEmail && <p className="text-xs text-gray-400 mt-1">Current admin: {adminEmail}</p>}
-              {!adminEmail && <p className="text-xs text-orange-500 mt-1">First time setup - enter your email to become admin</p>}
+              {adminEmail && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Current admin: {adminEmail}</p>}
+              {!adminEmail && <p className="text-xs text-orange-500 dark:text-orange-400 mt-1">First time setup - enter your email to become admin</p>}
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-all"
+              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-50 transition-all text-sm sm:text-base liquid-btn shadow-lg"
             >
               {loading ? 'Sending OTP...' : 'Send OTP'}
             </button>
@@ -161,25 +161,25 @@ export default function ResetCredentialsPage() {
 
         {/* Step 2: OTP Verification */}
         {step === 'otp' && (
-          <form onSubmit={handleVerifyOtp} className="space-y-5">
+          <form onSubmit={handleVerifyOtp} className="space-y-4 sm:space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Enter OTP</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Enter OTP</label>
               <input
                 type="text"
                 required
                 maxLength={6}
                 placeholder="123456"
-                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all text-center text-2xl tracking-widest font-mono"
+                className="w-full p-2.5 sm:p-3 input-glass rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all text-center text-xl sm:text-2xl tracking-widest font-mono"
                 value={formData.otp}
                 onChange={(e) => setFormData({ ...formData, otp: e.target.value.replace(/\D/g, '') })}
               />
-              <p className="text-xs text-gray-400 mt-1 text-center">OTP expires in 5 minutes</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 text-center">OTP expires in 5 minutes</p>
             </div>
 
             <button
               type="submit"
               disabled={loading || formData.otp.length !== 6}
-              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-all"
+              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-50 transition-all text-sm sm:text-base liquid-btn shadow-lg"
             >
               {loading ? 'Verifying...' : 'Verify OTP'}
             </button>
@@ -187,7 +187,7 @@ export default function ResetCredentialsPage() {
             <button
               type="button"
               onClick={() => { setStep('email'); setError(''); setSuccess(''); }}
-              className="w-full text-gray-500 py-2 text-sm hover:text-gray-700"
+              className="w-full glass text-gray-500 dark:text-gray-400 py-2 text-sm hover:text-gray-700 dark:hover:text-gray-300 rounded-xl"
             >
               ← Back to email
             </button>
@@ -196,42 +196,42 @@ export default function ResetCredentialsPage() {
 
         {/* Step 3: New Credentials */}
         {step === 'newCredentials' && (
-          <form onSubmit={handleResetCredentials} className="space-y-5">
+          <form onSubmit={handleResetCredentials} className="space-y-4 sm:space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">New Username</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">New Username</label>
               <input
                 type="text"
                 required
                 minLength={3}
                 placeholder="Enter new username"
-                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                className="w-full p-2.5 sm:p-3 input-glass rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm sm:text-base"
                 value={formData.newUsername}
                 onChange={(e) => setFormData({ ...formData, newUsername: e.target.value })}
               />
-              <p className="text-xs text-gray-400 mt-1">Minimum 3 characters</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Minimum 3 characters</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">New Password</label>
               <input
                 type="password"
                 required
                 minLength={6}
                 placeholder="Enter new password"
-                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                className="w-full p-2.5 sm:p-3 input-glass rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm sm:text-base"
                 value={formData.newPassword}
                 onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
               />
-              <p className="text-xs text-gray-400 mt-1">Minimum 6 characters</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Minimum 6 characters</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Confirm Password</label>
               <input
                 type="password"
                 required
                 placeholder="Confirm new password"
-                className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                className="w-full p-2.5 sm:p-3 input-glass rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm sm:text-base"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               />
@@ -240,7 +240,7 @@ export default function ResetCredentialsPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-all"
+              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-50 transition-all text-sm sm:text-base liquid-btn shadow-lg"
             >
               {loading ? 'Updating...' : 'Update Credentials'}
             </button>
@@ -248,18 +248,18 @@ export default function ResetCredentialsPage() {
             <button
               type="button"
               onClick={() => { setStep('otp'); setError(''); }}
-              className="w-full text-gray-500 py-2 text-sm hover:text-gray-700"
+              className="w-full glass text-gray-500 dark:text-gray-400 py-2 text-sm hover:text-gray-700 dark:hover:text-gray-300 rounded-xl"
             >
               ← Back to OTP
             </button>
           </form>
         )}
 
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center space-y-2">
-          <Link href="/admin/login" className="block text-sm text-indigo-600 hover:text-indigo-800">
+        <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white/20 dark:border-white/10 text-center space-y-2">
+          <Link href="/admin/login" className="block text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">
             🔐 Back to Admin Login
           </Link>
-          <Link href="/" className="block text-sm text-gray-400 hover:text-gray-600">
+          <Link href="/" className="block text-sm gradient-text hover:opacity-80">
             ← Back to Home
           </Link>
         </div>

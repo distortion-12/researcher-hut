@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS posts (
     content TEXT NOT NULL,
     excerpt TEXT,
     author TEXT DEFAULT 'Admin',
+    author_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    is_published BOOLEAN DEFAULT false,
+    is_approved BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

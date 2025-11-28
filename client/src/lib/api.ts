@@ -33,13 +33,18 @@ async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promis
 export const postsApi = {
   getAll: () => fetchApi<any[]>('/posts'),
   getAllAdmin: () => fetchApi<any[]>('/posts/admin/all'),
+  getPending: () => fetchApi<any[]>('/posts/admin/pending'),
+  getUserPosts: (userId: string) => fetchApi<any[]>(`/posts/user/${userId}`),
   getBySlug: (slug: string) => fetchApi<any>(`/posts/slug/${slug}`),
   getById: (id: string) => fetchApi<any>(`/posts/admin/${id}`),
   create: (data: any) => fetchApi<any>('/posts', { method: 'POST', body: data }),
+  createUserPost: (data: any) => fetchApi<any>('/posts/user', { method: 'POST', body: data }),
   update: (id: string, data: any) => fetchApi<any>(`/posts/${id}`, { method: 'PUT', body: data }),
   delete: (id: string) => fetchApi<any>(`/posts/${id}`, { method: 'DELETE' }),
   togglePublish: (id: string, is_published: boolean) => 
     fetchApi<any>(`/posts/${id}/publish`, { method: 'PATCH', body: { is_published } }),
+  approvePost: (id: string) => fetchApi<any>(`/posts/${id}/approve`, { method: 'PATCH' }),
+  rejectPost: (id: string) => fetchApi<any>(`/posts/${id}/reject`, { method: 'DELETE' }),
 };
 
 // Comments API
@@ -83,3 +88,4 @@ export const usersApi = {
   getById: (id: string) => fetchApi<any>(`/users/${id}`),
   create: (data: any) => fetchApi<any>('/users', { method: 'POST', body: data }),
 };
+

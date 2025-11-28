@@ -43,13 +43,15 @@ cd server
 # Install dependencies
 npm install
 
-# Create environment file
-cp .env.example .env
-
-# Edit .env with your Supabase credentials
-# SUPABASE_URL=your_supabase_url
-# SUPABASE_SERVICE_KEY=your_service_role_key
+# Create environment file (.env) with these variables:
 # PORT=5000
+# SUPABASE_URL=your_supabase_url
+# SUPABASE_ANON_KEY=your_anon_key
+# SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+# ADMIN_EMAIL=your_admin_email
+# ADMIN_USERNAME=your_admin_username
+# SMTP_EMAIL=your_smtp_email
+# SMTP_PASSWORD=your_smtp_password
 
 # Start development server
 npm run dev
@@ -65,13 +67,12 @@ cd client
 # Install dependencies
 npm install
 
-# Create environment file
-cp .env.example .env
-
-# Edit .env with your configuration
+# Create environment file (.env) with these variables:
 # NEXT_PUBLIC_API_URL=http://localhost:5000/api
 # NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 # NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+# NEXT_PUBLIC_ADMIN_EMAIL=your_admin_email
+# NEXT_PUBLIC_ADMIN_USERNAME=your_admin_username
 
 # Start development server
 npm run dev
@@ -81,11 +82,11 @@ The client will run at `http://localhost:3000`
 
 ## 🔑 Admin Setup
 
-1. Navigate to `/admin/reset-credentials`
+1. Navigate to `http://localhost:3000/admin/reset-credentials`
 2. Enter your admin email
 3. Receive OTP via email
 4. Set your username and password
-5. Login at `/admin/login`
+5. Login at `http://localhost:3000/admin/login`
 
 ## 📝 API Endpoints
 

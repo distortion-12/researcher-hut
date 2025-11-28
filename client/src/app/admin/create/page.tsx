@@ -9,7 +9,7 @@ import AdminGuard from '@/components/AdminGuard';
 
 const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), {
   ssr: false,
-  loading: () => <div className="h-[400px] bg-gray-100 animate-pulse rounded-lg" />,
+  loading: () => <div className="h-[400px] bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />,
 });
 
 function CreatePostContent() {
@@ -67,53 +67,53 @@ function CreatePostContent() {
       <div className="mb-8">
         <Link 
           href="/admin" 
-          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 mb-4 font-medium"
+          className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 mb-4 font-medium bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg"
         >
           ← Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">✍️ Write New Article</h1>
-        <p className="text-gray-500 mt-2">Use the rich text editor to format your content.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">✍️ Write New Article</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">Use the rich text editor to format your content.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title Input */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Article Title</label>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Article Title</label>
           <input
             type="text"
             required
             placeholder="e.g., The Psychology of Expectations"
-            className="w-full p-4 border border-gray-200 rounded-lg text-xl font-medium focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+            className="w-full p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-xl font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
             value={formData.title}
             onChange={handleTitleChange}
           />
         </div>
 
         {/* Slug Input */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">URL Slug</label>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">URL Slug</label>
           <div className="flex items-center gap-2">
-            <span className="text-gray-400">researcher.hut/</span>
+            <span className="text-gray-400 dark:text-gray-500">researcher.hut/</span>
             <input
               type="text"
               required
               placeholder="my-article-slug"
-              className="flex-1 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              className="flex-1 p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             />
           </div>
-          <p className="text-xs text-gray-400 mt-2">Auto-generated from title. You can customize it.</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Auto-generated from title. You can customize it.</p>
         </div>
 
         {/* Rich Text Editor */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Article Content</label>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Article Content</label>
           <RichTextEditor 
             content={formData.content} 
             onChange={(content) => setFormData({ ...formData, content })} 
           />
-          <p className="text-xs text-gray-400 mt-2">
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
             Use the toolbar to format text: headings, bold, italic, colors, lists, links, and more.
           </p>
         </div>
@@ -123,13 +123,13 @@ function CreatePostContent() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-all shadow-lg"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-50 transition-all shadow-lg"
           >
             {loading ? '📤 Publishing...' : '🚀 Publish Article'}
           </button>
           <Link 
             href="/admin"
-            className="text-gray-500 hover:text-gray-700 font-medium"
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium"
           >
             Cancel
           </Link>
