@@ -15,7 +15,12 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration for localhost development
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5000'],
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:5000',
+    'https://researcher-hut-qabi.onrender.com', // Your actual Frontend URL
+    process.env.CLIENT_URL || '' // Fallback from environment variables
+  ],
   credentials: true,
 }));
 app.use(express.json());
