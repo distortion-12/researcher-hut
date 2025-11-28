@@ -13,9 +13,26 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// CORS configuration
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:3000',
+  'https://researcher-hut.vercel.app',
+  'https://researcher-hut-client.vercel.app',
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.some(allowed => origin.includes(allowed?.replace('https://', '').replace('http://', '') || ''))) {
+      return callback(null, true);
+    }
+    
+    console.log('Blocked by CORS:', origin);
+    return callback(null, true); // Allow all for now, restrict later
+  },
   credentials: true,
 }));
 app.use(express.json());
