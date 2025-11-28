@@ -5,11 +5,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOtpEmail = async (to: string, otp: string): Promise<boolean> => {
   try {
-    // In production, 'from' must be a verified domain (e.g., 'noreply@yourdomain.com')
-    // For testing, use 'onboarding@resend.dev'
-    const fromEmail = process.env.NODE_ENV === 'production' 
-      ? 'Researcher.Hut <noreply@researcherhut.com>' 
-      : 'Researcher.Hut <onboarding@resend.dev>';
+    // ALWAYS use the testing domain until you verify a custom domain
+    const fromEmail = 'Researcher.Hut <onboarding@resend.dev>';
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
