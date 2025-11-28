@@ -1,13 +1,12 @@
 {
   "name": "researcher-hut-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend server for Researcher.Hut platform",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npm install --include=dev && tsc",
-    "start": "node dist/index.js",
-    "lint": "eslint src/**/*.ts"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",
@@ -23,5 +22,8 @@
   },
   "devDependencies": {
     "tsx": "^4.6.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
