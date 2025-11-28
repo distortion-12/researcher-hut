@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
@@ -11,9 +11,11 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { sendAdminOtp, verifyAdminOtp, adminEmail } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [step, setStep] = useState<Step>('email');
+  const [resendCooldown, setResendCooldown] = useState(0);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -21,6 +23,14 @@ export default function AdminLoginPage() {
     username: '',
     password: '',
   });
+
+  // Countdown timer for resend button
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -172,9 +182,36 @@ export default function AdminLoginPage() {
               {loading ? 'Verifying...' : 'Verify OTP'}
             </button>
 
+            {/* Resend OTP Button */}
             <button
               type="button"
-              onClick={() => { setStep('email'); setError(''); setSuccess(''); }}
+              disabled={resending || resendCooldown > 0}
+              onClick={async () => {
+                setResending(true);
+                setError('');
+                const result = await sendAdminOtp(formData.email);
+                if (result.error) {
+                  setError(result.error);
+                } else {
+                  setSuccess('New OTP sent to your email!');
+                  setResendCooldown(60);
+                }
+                setResending(false);
+              }}
+              className="w-full py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 disabled:text-gray-400 dark:disabled:text-gray-500 transition-colors"
+            >
+              {resending ? (
+                'Sending...'
+              ) : resendCooldown > 0 ? (
+                `Resend OTP in ${resendCooldown}s`
+              ) : (
+                '🔄 Resend OTP'
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setStep('email'); setError(''); setSuccess(''); setResendCooldown(0); }}
               className="w-full text-gray-500 dark:text-gray-400 py-2 text-sm hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             >
               ← Back to email
