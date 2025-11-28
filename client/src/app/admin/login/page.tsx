@@ -135,7 +135,6 @@ export default function AdminLoginPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              {adminEmail && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Configured admin: {adminEmail}</p>}
             </div>
 
             <button
