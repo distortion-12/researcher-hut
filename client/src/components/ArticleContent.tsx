@@ -77,15 +77,28 @@ export default function ArticleContent({ post }: ArticleContentProps) {
         {/* Comments Section */}
         <Comments postId={post.id} />
 
-        {/* Footer */}
-        <footer className="mt-8 sm:mt-10 md:mt-12 pt-4 sm:pt-6 md:pt-8 border-t border-gray-200 dark:border-gray-700 text-center">
-          <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Thanks for reading!</p>
-          <Link 
-            href="/" 
-            className="text-indigo-600 dark:text-indigo-400 hover:underline mt-2 inline-block text-sm sm:text-base hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-          >
-            ← Read more articles
-          </Link>
+        {/* Footer with Share */}
+        <footer className="mt-8 sm:mt-10 md:mt-12 pt-4 sm:pt-6 md:pt-8 border-t border-gray-200 dark:border-gray-700">
+          <div className="text-center mb-6">
+            <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base mb-2">Thanks for reading!</p>
+            <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg font-medium">
+              Enjoyed this article? Share it with others!
+            </p>
+          </div>
+          
+          {/* Share Section */}
+          <div className="flex justify-center mb-6">
+            <ShareButton title={post.title} slug={post.slug} />
+          </div>
+          
+          <div className="text-center">
+            <Link 
+              href="/" 
+              className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm sm:text-base hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+            >
+              ← Read more articles
+            </Link>
+          </div>
         </footer>
       </article>
     </ReadingModeWrapper>
