@@ -148,13 +148,14 @@ export const createUserPost = async (req: Request, res: Response) => {
   try {
     const { title, slug, content, author_id, author_name } = req.body;
 
+    // Don't include author_id if it would violate foreign key
+    // The author_id from Supabase Auth may not exist in our users table
     const { data, error } = await supabase
       .from('posts')
       .insert([{ 
         title, 
         slug, 
         content, 
-        author_id,
         author: author_name || 'User',
         is_published: false, 
         is_approved: false 
