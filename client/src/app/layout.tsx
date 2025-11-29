@@ -29,14 +29,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen`}>
+      <body className={`${inter.className} antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col`}>
         <ThemeProvider>
           <AuthProvider>
             <Navbar />
-            <main className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+            <main className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 flex-1 w-full">
               {children}
             </main>
-            <footer className="border-t border-gray-200 dark:border-gray-800 mt-12 sm:mt-16 md:mt-20 py-8 sm:py-10 md:py-12 text-center px-4">
+            <footer className="border-t border-gray-200 dark:border-gray-800 py-8 sm:py-10 md:py-12 text-center px-4 mt-auto">
               {/* Instagram Follow Section */}
               <div className="max-w-md mx-auto mb-6 sm:mb-8">
                 <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base mb-3 sm:mb-4">

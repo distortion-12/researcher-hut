@@ -20,7 +20,7 @@ export default async function Home() {
   const posts = await getPosts();
 
   return (
-    <div className="min-h-screen">
+    <div className="flex-1">
       {/* Hero Section */}
       <header className="text-center py-12 sm:py-16 bg-gradient-to-b from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900 -mx-3 sm:-mx-4 md:-mx-6 px-3 sm:px-4 md:px-6 mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">

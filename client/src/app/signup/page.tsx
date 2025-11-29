@@ -123,7 +123,7 @@ export default function SignUpPage() {
 
   if (step === 'success') {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4 sm:px-0">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-0 py-8">
         <div className="bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-xl p-6 sm:p-8 w-full max-w-md text-center">
           <div className="w-16 sm:w-20 h-16 sm:h-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl sm:text-4xl">✓</span>
@@ -144,7 +144,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 sm:px-0 py-4 sm:py-0">
+    <div className="flex-1 flex items-center justify-center px-4 sm:px-0 py-8">
       <div className="bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-xl p-5 sm:p-8 w-full max-w-md">
         <div className="text-center mb-5 sm:mb-8">
           <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-sm">

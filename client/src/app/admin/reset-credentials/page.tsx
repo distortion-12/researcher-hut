@@ -85,7 +85,7 @@ export default function ResetCredentialsPage() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 sm:px-0 py-4 sm:py-0">
+    <div className="flex-1 flex items-center justify-center px-4 sm:px-0 py-8">
       <div className="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 w-full max-w-md">
         <div className="text-center mb-5 sm:mb-8">
           <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 pulse-glow">
