@@ -155,14 +155,18 @@ export default function ProfilePage() {
       setOriginalUsername(username.toLowerCase());
       
       // Refresh username change status
-      const changeStatus = await usersApi.checkUsernameChangeStatus(user.id);
-      setUsernameChangeAllowed(changeStatus.allowed);
-      setDaysUntilChange(changeStatus.daysRemaining);
+      try {
+        const changeStatus = await usersApi.checkUsernameChangeStatus(user.id);
+        setUsernameChangeAllowed(changeStatus.allowed);
+        setDaysUntilChange(changeStatus.daysRemaining);
+      } catch (err) {
+        // Ignore if this fails
+      }
       
-      // Wait a moment then reload to update navbar
+      // Clear success message after 3 seconds
       setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+        setSuccess('');
+      }, 3000);
     } catch (err: any) {
       setError(err.message || 'Failed to update profile');
     } finally {
@@ -226,10 +230,10 @@ export default function ProfilePage() {
       setEmailSuccess('Email updated successfully!');
       setCurrentEmail(result.newEmail);
       
-      // Close modal and reload after short delay
+      // Close modal after short delay (no reload)
       setTimeout(() => {
         setShowEmailModal(false);
-        window.location.reload();
+        resetEmailModal();
       }, 1500);
     } catch (err: any) {
       setEmailError(err.message || 'Failed to verify code');
