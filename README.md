@@ -1,23 +1,51 @@
-# Researcher.Hut
+# 🔬 Researcher.Hut
 
-A modern research article sharing platform built with Next.js (client) and Express.js (server), using Supabase as the database.
+A modern research article sharing platform where users can read, write, and share research insights. Built with Next.js and Express.js, featuring a beautiful UI with dark mode support.
+
+[![Instagram](https://img.shields.io/badge/Instagram-@research.hut-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/research.hut)
+
+## ✨ Features
+
+### For Readers
+- 📖 **Reading Mode** - Distraction-free reading experience with fullscreen support
+- 🌙 **Dark Mode** - Easy on the eyes with automatic theme switching
+- 🔍 **Search** - Find articles by keywords across titles and content
+- ⭐ **Ratings** - Rate articles from 1-5 stars
+- 💬 **Comments** - Engage with articles through comments
+- 📤 **Share** - Share articles via Twitter, Facebook, LinkedIn, WhatsApp, Telegram, or copy link
+- 📄 **Download** - Download articles as PDF or DOCX
+
+### For Writers
+- ✍️ **Rich Text Editor** - Write articles with formatting, headings, lists, and more
+- 📝 **User Submissions** - Submit articles for admin review
+- 👤 **Author Credit** - Add your name or Instagram handle for attribution
+
+### For Admins
+- 🔐 **Secure OTP Login** - Email-based OTP authentication
+- 📊 **Dashboard** - Manage all articles and pending submissions
+- ✅ **Article Approval** - Review and approve user-submitted articles
+- 📝 **Create & Edit** - Full control over article management
 
 ## 📁 Project Structure
 
 ```
 researcher-hut/
-├── client/                 # Next.js frontend application
+├── client/                 # Next.js 14 frontend
 │   ├── src/
-│   │   ├── app/           # Next.js 14 App Router pages
-│   │   ├── components/    # Reusable React components
-│   │   ├── context/       # React Context providers
-│   │   └── lib/           # Utility functions and API client
+│   │   ├── app/           # App Router pages
+│   │   │   ├── admin/     # Admin dashboard & login
+│   │   │   ├── search/    # Search results page
+│   │   │   ├── write/     # Article submission
+│   │   │   └── [slug]/    # Dynamic article pages
+│   │   ├── components/    # React components
+│   │   ├── context/       # Auth & Theme contexts
+│   │   └── lib/           # API client & utilities
 │   └── public/            # Static assets
-├── server/                 # Express.js backend API
+├── server/                 # Express.js backend
 │   └── src/
 │       ├── controllers/   # Route handlers
-│       ├── routes/        # API route definitions
-│       └── lib/           # Database and utilities
+│       ├── routes/        # API routes
+│       └── lib/           # Supabase & email utilities
 └── supabase/              # Database schema
 ```
 
@@ -25,115 +53,159 @@ researcher-hut/
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Supabase account (free tier works)
+- Resend account for emails (free tier works)
 
 ### 1. Setup Supabase
 
 1. Create a new project at [supabase.com](https://supabase.com)
-2. Go to SQL Editor and run the schema from `supabase/schema.sql`
-3. Copy your project URL and keys from Settings > API
+2. Go to **SQL Editor** and run the schema from `supabase/schema.sql`
+3. Copy your credentials from **Settings > API**:
+   - Project URL
+   - Anon Key
+   - Service Role Key
 
-### 2. Setup Server
+### 2. Setup Resend (Email Service)
+
+1. Create account at [resend.com](https://resend.com)
+2. Add and verify your domain
+3. Create an API key
+
+### 3. Setup Server
 
 ```bash
 cd server
-
-# Install dependencies
 npm install
+```
 
-# Create environment file (.env) with these variables:
-# PORT=5000
-# SUPABASE_URL=your_supabase_url
-# SUPABASE_ANON_KEY=your_anon_key
-# SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-# ADMIN_EMAIL=your_admin_email
-# ADMIN_USERNAME=your_admin_username
-# SMTP_EMAIL=your_smtp_email
-# SMTP_PASSWORD=your_smtp_password
+Create `.env` file:
+```env
+PORT=5000
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+ADMIN_EMAIL=your_admin_email
+ADMIN_USERNAME=your_admin_username
+RESEND_API_KEY=your_resend_api_key
+```
 
-# Start development server
+Start the server:
+```bash
 npm run dev
 ```
 
-The server will run at `http://localhost:5000`
+Server runs at `http://localhost:5000`
 
-### 3. Setup Client
+### 4. Setup Client
 
 ```bash
 cd client
-
-# Install dependencies
 npm install
+```
 
-# Create environment file (.env) with these variables:
-# NEXT_PUBLIC_API_URL=http://localhost:5000/api
-# NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-# NEXT_PUBLIC_ADMIN_EMAIL=your_admin_email
-# NEXT_PUBLIC_ADMIN_USERNAME=your_admin_username
+Create `.env.local` file:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-# Start development server
+Start the client:
+```bash
 npm run dev
 ```
 
-The client will run at `http://localhost:3000`
+Client runs at `http://localhost:3000`
 
 ## 🔑 Admin Setup
 
-1. Navigate to `http://localhost:3000/admin/reset-credentials`
-2. Enter your admin email
+1. Navigate to `/admin/reset-credentials`
+2. Enter admin email (from server .env)
 3. Receive OTP via email
-4. Set your username and password
-5. Login at `http://localhost:3000/admin/login`
+4. Set username and password
+5. Login at `/admin/login`
 
 ## 📝 API Endpoints
 
 ### Posts
-- `GET /api/posts` - Get all posts
-- `GET /api/posts/:slug` - Get post by slug
-- `POST /api/posts` - Create new post
-- `PUT /api/posts/:id` - Update post
-- `DELETE /api/posts/:id` - Delete post
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/posts` | Get published articles |
+| GET | `/api/posts/search?q=keyword` | Search articles |
+| GET | `/api/posts/slug/:slug` | Get article by slug |
+| POST | `/api/posts` | Create article (admin) |
+| POST | `/api/posts/user` | Submit article (user) |
+| PUT | `/api/posts/:id` | Update article |
+| DELETE | `/api/posts/:id` | Delete article |
+| PATCH | `/api/posts/:id/approve` | Approve article |
 
 ### Comments
-- `GET /api/posts/:postId/comments` - Get post comments
-- `POST /api/posts/:postId/comments` - Add comment
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/comments/:postId` | Get post comments |
+| POST | `/api/comments/:postId` | Add comment |
+| DELETE | `/api/comments/:id` | Delete comment |
 
 ### Ratings
-- `GET /api/posts/:postId/ratings` - Get post ratings
-- `POST /api/posts/:postId/ratings` - Add/update rating
-- `GET /api/posts/:postId/ratings/user/:userId` - Get user's rating
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/ratings/:postId` | Get post ratings |
+| GET | `/api/ratings/:postId/user/:userId` | Get user's rating |
+| POST | `/api/ratings/:postId` | Add/update rating |
 
 ### Auth
-- `POST /api/auth/send-otp` - Send admin OTP
-- `POST /api/auth/verify-otp` - Verify OTP and login
-- `POST /api/auth/reset-send-otp` - Send reset OTP
-- `POST /api/auth/reset-credentials` - Reset admin credentials
-- `GET /api/auth/admin-email` - Get current admin email
-
-### Users
-- `GET /api/users/:id` - Get user by ID
-- `GET /api/users/email/:email` - Get user by email
-- `POST /api/users` - Create new user
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/admin/send-otp` | Send admin login OTP |
+| POST | `/api/auth/admin/verify` | Verify OTP and login |
+| POST | `/api/auth/admin/reset/send-otp` | Send reset OTP |
+| POST | `/api/auth/admin/reset` | Reset credentials |
+| POST | `/api/auth/signup/send-otp` | Send signup OTP |
+| POST | `/api/auth/signup/verify` | Verify signup |
 
 ## 🛠 Tech Stack
 
-### Client
+### Frontend
 - **Next.js 14** - React framework with App Router
 - **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
+- **Tailwind CSS** - Styling with dark mode
 - **Tiptap** - Rich text editor
-- **Supabase JS** - Authentication only
+- **Supabase JS** - User authentication
 
-### Server
+### Backend
 - **Express.js** - Web framework
 - **TypeScript** - Type safety
 - **Supabase JS** - Database operations
-- **CORS** - Cross-origin support
+- **Resend** - Email delivery
+- **bcryptjs** - Password hashing
 
 ### Database
-- **Supabase (PostgreSQL)** - Database and authentication
+- **Supabase (PostgreSQL)** - Database with Row Level Security
 
-Made with ❤️ by distortion-12
+## 🌐 Deployment
+
+### Deploy to Render
+
+Both client and server can be deployed to [Render](https://render.com):
+
+**Server:**
+- Build Command: `npm install && npm run build`
+- Start Command: `npm start`
+- Add environment variables
+
+**Client:**
+- Build Command: `npm install && npm run build`
+- Start Command: `npm start`
+- Set `NEXT_PUBLIC_API_URL` to your server URL
+
+## 📱 Follow Us
+
+Stay updated with the latest research insights:
+
+[![Instagram](https://img.shields.io/badge/Instagram-@research.hut-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/research.hut?igsh=b2dzeW56MHM3bjBn)
+
+---
+
+Made with ❤️ by the Researcher.Hut team
