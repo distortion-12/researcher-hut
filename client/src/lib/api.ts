@@ -37,6 +37,7 @@ export const postsApi = {
   getUserPosts: (userId: string) => fetchApi<any[]>(`/posts/user/${userId}`),
   getBySlug: (slug: string) => fetchApi<any>(`/posts/slug/${slug}`),
   getById: (id: string) => fetchApi<any>(`/posts/admin/${id}`),
+  search: (query: string) => fetchApi<any[]>(`/posts/search?q=${encodeURIComponent(query)}`),
   create: (data: any) => fetchApi<any>('/posts', { method: 'POST', body: data }),
   createUserPost: (data: any) => fetchApi<any>('/posts/user', { method: 'POST', body: data }),
   update: (id: string, data: any) => fetchApi<any>(`/posts/${id}`, { method: 'PUT', body: data }),

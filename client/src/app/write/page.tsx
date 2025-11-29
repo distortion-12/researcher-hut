@@ -21,6 +21,7 @@ export default function WriteArticle() {
     title: '',
     slug: '',
     content: '',
+    authorCredit: '',
   });
 
   const generateSlug = (title: string) => {
@@ -56,12 +57,15 @@ export default function WriteArticle() {
     setLoading(true);
 
     try {
+      // Use custom author credit if provided, otherwise fallback to user info
+      const authorName = formData.authorCredit.trim() || user.name || user.username || user.email;
+      
       await postsApi.createUserPost({
         title: formData.title,
         slug: formData.slug,
         content: formData.content,
         author_id: user.id,
-        author_name: user.name || user.username || user.email,
+        author_name: authorName,
       });
       setSubmitted(true);
     } catch (error: any) {
@@ -109,7 +113,7 @@ export default function WriteArticle() {
             <button
               onClick={() => {
                 setSubmitted(false);
-                setFormData({ title: '', slug: '', content: '' });
+                setFormData({ title: '', slug: '', content: '', authorCredit: '' });
               }}
               className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm sm:text-base"
             >
@@ -174,6 +178,23 @@ export default function WriteArticle() {
             />
           </div>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Auto-generated from title. You can customize it.</p>
+        </div>
+
+        {/* Author Credit (Optional) */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            Author Credit <span className="text-gray-400 dark:text-gray-500 font-normal">(Optional)</span>
+          </label>
+          <input
+            type="text"
+            placeholder="@instagram_handle or Your Name"
+            className="w-full p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base transition-all"
+            value={formData.authorCredit}
+            onChange={(e) => setFormData({ ...formData, authorCredit: e.target.value })}
+          />
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            Want credit for your work? Add your name or Instagram handle. This will be shown with your article.
+          </p>
         </div>
 
         {/* Rich Text Editor */}

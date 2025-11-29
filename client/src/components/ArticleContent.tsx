@@ -6,10 +6,12 @@ import Comments from '@/components/Comments';
 import Rating from '@/components/Rating';
 import ReadingModeWrapper from '@/components/ReadingModeWrapper';
 import DownloadButtons from '@/components/DownloadButtons';
+import ShareButton from '@/components/ShareButton';
 
 interface Post {
   id: string;
   title: string;
+  slug: string;
   content: string;
   created_at: string;
 }
@@ -52,11 +54,14 @@ export default function ArticleContent({ post }: ArticleContentProps) {
           </div>
           
           {/* Download Buttons */}
-          <DownloadButtons 
-            title={post.title} 
-            content={post.content} 
-            date={post.created_at} 
-          />
+          <div className="flex flex-wrap items-center gap-3">
+            <DownloadButtons 
+              title={post.title} 
+              content={post.content} 
+              date={post.created_at} 
+            />
+            <ShareButton title={post.title} slug={post.slug} />
+          </div>
         </header>
         
         {/* Article Content */}

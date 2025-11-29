@@ -280,3 +280,46 @@ export const rejectPost = async (req: Request, res: Response) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Search posts by keyword (searches title and content)
+export const searchPosts = async (req: Request, res: Response) => {
+  try {
+    const { q } = req.query;
+    
+    if (!q || typeof q !== 'string') {
+      return res.status(400).json({ error: 'Search query is required' });
+    }
+
+    const searchTerm = q.toLowerCase().trim();
+    
+    // Get all published and approved posts
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('is_published', true)
+      .eq('is_approved', true)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    // Filter posts that match the search term in title or content
+    // This provides a simple keyword and similar word matching
+    const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 2);
+    
+    const filteredPosts = posts?.filter((post: Post) => {
+      const titleLower = post.title.toLowerCase();
+      const contentLower = post.content.toLowerCase();
+      
+      // Check if any search word matches in title or content
+      return searchWords.some(word => 
+        titleLower.includes(word) || contentLower.includes(word)
+      ) || titleLower.includes(searchTerm) || contentLower.includes(searchTerm);
+    }) || [];
+
+    res.json(filteredPosts);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};

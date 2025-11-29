@@ -4,19 +4,44 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import { useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const { user, isAdmin, signOut } = useAuth();
   const { darkMode, readingMode, toggleDarkMode, toggleReadingMode } = useTheme();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Check if user is viewing an article (slug pages that are not special routes)
+  const isArticlePage = pathname !== '/' && 
+    !pathname.startsWith('/admin') && 
+    !pathname.startsWith('/login') && 
+    !pathname.startsWith('/signup') && 
+    !pathname.startsWith('/write') && 
+    !pathname.startsWith('/my-articles') && 
+    !pathname.startsWith('/search');
 
   const handleSignOut = async () => {
     await signOut();
     setShowDropdown(false);
     setShowMobileMenu(false);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      setShowSearch(false);
+      setShowMobileMenu(false);
+    }
   };
 
   // Close dropdowns when clicking outside
@@ -27,6 +52,9 @@ export default function Navbar() {
       }
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
         setShowMobileMenu(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearch(false);
       }
     };
 
@@ -61,6 +89,41 @@ export default function Navbar() {
             Articles
           </Link>
           
+          {/* Search */}
+          <div className="relative" ref={searchRef}>
+            {showSearch ? (
+              <form onSubmit={handleSearch} className="flex items-center">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-48 lg:w-56 px-3 py-1.5 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 text-sm focus:outline-none focus:ring-2 focus:ring-white/50"
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowSearch(false)}
+                  className="ml-2 p-1.5 rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </form>
+            ) : (
+              <button
+                onClick={() => setShowSearch(true)}
+                className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
+                title="Search articles"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 lg:h-5 lg:w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            )}
+          </div>
+          
           {/* Theme Toggle Buttons */}
           <div className="flex items-center gap-1.5">
             <button
@@ -79,15 +142,17 @@ export default function Navbar() {
               )}
             </button>
             
-            <button
-              onClick={toggleReadingMode}
-              className={`p-2 rounded-lg transition-colors ${readingMode ? 'bg-white/30' : 'bg-white/20 hover:bg-white/30'}`}
-              title={readingMode ? 'Exit Reading Mode' : 'Enter Reading Mode'}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 lg:h-5 lg:w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </button>
+            {isArticlePage && (
+              <button
+                onClick={toggleReadingMode}
+                className={`p-2 rounded-lg transition-colors ${readingMode ? 'bg-white/30' : 'bg-white/20 hover:bg-white/30'}`}
+                title={readingMode ? 'Exit Reading Mode' : 'Enter Reading Mode'}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 lg:h-5 lg:w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </button>
+            )}
           </div>
           
           {/* User Links */}
@@ -210,6 +275,30 @@ export default function Navbar() {
       {showMobileMenu && (
         <div ref={mobileMenuRef} className="md:hidden bg-white dark:bg-gray-900 border-t border-indigo-500/30">
           <div className="px-4 py-3 space-y-2">
+            {/* Mobile Search */}
+            <form onSubmit={handleSearch} className="mb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 relative">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Search articles..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition-all"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+
             <Link
               href="/"
               className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-gray-800 dark:text-white transition-colors"
@@ -218,12 +307,14 @@ export default function Navbar() {
               📰 Articles
             </Link>
             
-            <button
-              onClick={() => { toggleReadingMode(); }}
-              className={`w-full text-left px-4 py-3 rounded-lg font-medium text-gray-800 dark:text-white transition-colors ${readingMode ? 'bg-indigo-100 dark:bg-indigo-900/30' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}`}
-            >
-              📖 Reading Mode {readingMode && '✓'}
-            </button>
+            {isArticlePage && (
+              <button
+                onClick={() => { toggleReadingMode(); }}
+                className={`w-full text-left px-4 py-3 rounded-lg font-medium text-gray-800 dark:text-white transition-colors ${readingMode ? 'bg-indigo-100 dark:bg-indigo-900/30' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+              >
+                📖 Reading Mode {readingMode && '✓'}
+              </button>
+            )}
             
             {user && !isAdmin && (
               <>

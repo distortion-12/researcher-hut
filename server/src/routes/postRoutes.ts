@@ -13,12 +13,14 @@ import {
   togglePublish,
   approvePost,
   rejectPost,
+  searchPosts,
 } from '../controllers/postController';
 
 const router = Router();
 
 // Public routes
 router.get('/', getPosts);
+router.get('/search', searchPosts);
 router.get('/slug/:slug', getPostBySlug);
 
 // User routes
