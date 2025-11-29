@@ -397,3 +397,127 @@ export const verifyUserSignupOtp = async (req: Request, res: Response) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Store pending email changes
+const pendingEmailChanges: Map<string, { userId: string; oldEmail: string; newEmail: string; otp: string; expires: number }> = new Map();
+
+// Send OTP for email change
+export const sendEmailChangeOtp = async (req: Request, res: Response) => {
+  try {
+    const { userId, currentEmail, newEmail } = req.body;
+
+    // Validate new email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newEmail)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Check if new email already exists in users table
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('email')
+      .eq('email', newEmail.toLowerCase())
+      .neq('id', userId)
+      .single();
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'This email is already registered' });
+    }
+
+    // Verify the user owns the current email
+    const { data: user } = await supabase
+      .from('users')
+      .select('email')
+      .eq('id', userId)
+      .single();
+
+    if (!user || user.email.toLowerCase() !== currentEmail.toLowerCase()) {
+      return res.status(400).json({ error: 'Invalid user or email mismatch' });
+    }
+
+    // Generate OTP
+    const otp = generateOtp();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes for email change
+
+    // Store pending email change
+    pendingEmailChanges.set(userId, {
+      userId,
+      oldEmail: currentEmail.toLowerCase(),
+      newEmail: newEmail.toLowerCase(),
+      otp,
+      expires: expiresAt,
+    });
+
+    // Send OTP to the NEW email (to verify they own it)
+    const emailSent = await sendOtpEmail(newEmail, otp);
+    
+    if (!emailSent) {
+      console.log(`[FALLBACK] Email change OTP for ${newEmail}: ${otp}`);
+      return res.json({ 
+        message: 'OTP generated. Check server console for OTP.',
+        devMode: true 
+      });
+    }
+
+    res.json({ message: 'Verification code sent to ' + newEmail });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Verify email change OTP and update email
+export const verifyEmailChange = async (req: Request, res: Response) => {
+  try {
+    const { userId, otp } = req.body;
+
+    const pending = pendingEmailChanges.get(userId);
+
+    if (!pending) {
+      return res.status(400).json({ error: 'No pending email change found. Please request OTP again.' });
+    }
+
+    if (pending.otp !== otp) {
+      return res.status(400).json({ error: 'Invalid verification code' });
+    }
+
+    if (pending.expires < Date.now()) {
+      pendingEmailChanges.delete(userId);
+      return res.status(400).json({ error: 'Verification code expired. Please request a new one.' });
+    }
+
+    // Update email in Supabase Auth
+    const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+      email: pending.newEmail,
+      email_confirm: true,
+    });
+
+    if (authError) {
+      return res.status(400).json({ error: 'Failed to update email: ' + authError.message });
+    }
+
+    // Update email in users table
+    const { error: profileError } = await supabase
+      .from('users')
+      .update({ 
+        email: pending.newEmail,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', userId);
+
+    if (profileError) {
+      console.error('Error updating user email in profile:', profileError);
+      return res.status(400).json({ error: 'Failed to update profile email' });
+    }
+
+    // Clean up pending email change
+    pendingEmailChanges.delete(userId);
+
+    res.json({ 
+      success: true, 
+      message: 'Email updated successfully!',
+      newEmail: pending.newEmail
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};

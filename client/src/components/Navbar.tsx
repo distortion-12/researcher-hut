@@ -193,6 +193,13 @@ export default function Navbar() {
                   >
                     ✍️ Create Article
                   </Link>
+                  <Link
+                    href="/admin/reset-credentials"
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    ⚙️ Account Settings
+                  </Link>
                   <hr className="my-2 border-gray-200 dark:border-gray-600" />
                   <button
                     onClick={handleSignOut}
@@ -217,6 +224,13 @@ export default function Navbar() {
                   <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-600">
                     @{user.username || user.email}
                   </div>
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    ⚙️ Profile Settings
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -273,8 +287,20 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {showMobileMenu && (
-        <div ref={mobileMenuRef} className="md:hidden bg-white dark:bg-gray-900 border-t border-indigo-500/30">
-          <div className="px-4 py-3 space-y-2">
+        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-indigo-500/30">
+          {/* Close button at top of mobile menu */}
+          <div className="flex justify-end px-4 pt-3">
+            <button
+              onClick={() => setShowMobileMenu(false)}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Close menu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="px-4 pb-3 space-y-2">
             {/* Mobile Search */}
             <form onSubmit={handleSearch} className="mb-3">
               <div className="flex items-center gap-2">
@@ -351,6 +377,13 @@ export default function Navbar() {
                 >
                   ✍️ Create Article
                 </Link>
+                <Link
+                  href="/admin/reset-credentials"
+                  className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-gray-800 dark:text-white transition-colors"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  ⚙️ Account Settings
+                </Link>
               </>
             )}
             
@@ -361,6 +394,15 @@ export default function Navbar() {
                 <div className="px-4 py-2 text-gray-600 dark:text-gray-300 text-sm">
                   Signed in as @{user.username || user.email}
                 </div>
+                {!isAdmin && (
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-gray-800 dark:text-white transition-colors"
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    ⚙️ Profile
+                  </Link>
+                )}
                 <button
                   onClick={handleSignOut}
                   className="w-full text-left px-4 py-3 rounded-lg bg-red-50 dark:bg-red-500/20 hover:bg-red-100 dark:hover:bg-red-500/30 text-red-600 dark:text-red-300 font-medium transition-colors"

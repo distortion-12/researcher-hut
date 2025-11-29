@@ -81,6 +81,11 @@ export const authApi = {
     fetchApi<any>('/auth/signup/send-otp', { method: 'POST', body: data }),
   verifySignupOtp: (data: { email: string; otp: string }) =>
     fetchApi<any>('/auth/signup/verify', { method: 'POST', body: data }),
+  // Email change with OTP
+  sendEmailChangeOtp: (data: { userId: string; currentEmail: string; newEmail: string }) =>
+    fetchApi<any>('/auth/email/send-otp', { method: 'POST', body: data }),
+  verifyEmailChange: (data: { userId: string; otp: string }) =>
+    fetchApi<any>('/auth/email/verify', { method: 'POST', body: data }),
 };
 
 // Users API
@@ -88,5 +93,9 @@ export const usersApi = {
   checkUsername: (username: string) => fetchApi<{ available: boolean }>(`/users/check-username/${username}`),
   getById: (id: string) => fetchApi<any>(`/users/${id}`),
   create: (data: any) => fetchApi<any>('/users', { method: 'POST', body: data }),
+  update: (id: string, data: { name?: string; username?: string; profile_picture?: string }) => 
+    fetchApi<any>(`/users/${id}`, { method: 'PUT', body: data }),
+  checkUsernameChangeStatus: (id: string) => 
+    fetchApi<{ allowed: boolean; daysRemaining: number; lastChangedAt?: string }>(`/users/${id}/username-change-status`),
 };
 
