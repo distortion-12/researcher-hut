@@ -2,6 +2,8 @@
 
 A modern research article sharing platform where users can read, write, and share research insights. Built with Next.js and Express.js, featuring a beautiful UI with dark mode support.
 
+🌐 **Live Website:** [https://researcher-hut.onrender.com](https://researcher-hut.onrender.com)
+
 [![Instagram](https://img.shields.io/badge/Instagram-@research.hut-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/research.hut)
 
 ## ✨ Features
