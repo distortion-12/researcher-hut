@@ -98,7 +98,7 @@ export default function Comments({ postId }: CommentsProps) {
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Share your thoughts..."
               rows={3}
-              className="w-full p-2.5 sm:p-3 input-glass outline-none resize-none text-gray-900 dark:text-gray-100 text-sm sm:text-base"
+              className="w-full p-2.5 sm:p-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl outline-none resize-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 transition-all"
             />
             {error && <p className="text-red-500 dark:text-red-400 text-sm mt-2">{error}</p>}
             <div className="flex justify-end mt-2 sm:mt-3">
