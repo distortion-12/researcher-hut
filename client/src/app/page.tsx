@@ -44,6 +44,7 @@ export default async function Home() {
               id={post.id}
               title={post.title}
               slug={post.slug}
+              author={post.author}
               created_at={post.created_at}
             />
           ))}
