@@ -136,6 +136,4 @@ The client will run at `http://localhost:3000`
 ### Database
 - **Supabase (PostgreSQL)** - Database and authentication
 
-## 📄 License
-
-MIT License
+Made with ❤️ by distortion-12
