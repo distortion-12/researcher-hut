@@ -23,6 +23,7 @@ function EditPostContent() {
     title: '',
     slug: '',
     content: '',
+    author: '',
     is_published: true,
   });
 
@@ -36,6 +37,7 @@ function EditPostContent() {
             title: data.title,
             slug: data.slug,
             content: data.content,
+            author: data.author || '',
             is_published: data.is_published,
           });
         }
@@ -81,6 +83,7 @@ function EditPostContent() {
         title: formData.title,
         slug: formData.slug,
         content: formData.content,
+        author: formData.author,
         is_published: formData.is_published,
       });
       router.push('/admin');
@@ -143,6 +146,19 @@ function EditPostContent() {
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             />
           </div>
+        </div>
+
+        {/* Author/Publisher Name Input */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Publisher Name</label>
+          <input
+            type="text"
+            placeholder="e.g., John Doe"
+            className="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+            value={formData.author}
+            onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+          />
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">The name displayed as the article author/publisher.</p>
         </div>
 
         {/* Publish Status */}

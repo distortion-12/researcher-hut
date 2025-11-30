@@ -148,8 +148,7 @@ export const createUserPost = async (req: Request, res: Response) => {
   try {
     const { title, slug, content, author_id, author_name } = req.body;
 
-    // Don't include author_id if it would violate foreign key
-    // The author_id from Supabase Auth may not exist in our users table
+    // Include author_id so users can find their posts in their dashboard
     const { data, error } = await supabase
       .from('posts')
       .insert([{ 
@@ -157,6 +156,7 @@ export const createUserPost = async (req: Request, res: Response) => {
         slug, 
         content, 
         author: author_name || 'User',
+        author_id: author_id,
         is_published: false, 
         is_approved: false 
       }])
@@ -177,11 +177,17 @@ export const createUserPost = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, slug, content, is_published } = req.body;
+    const { title, slug, content, is_published, author } = req.body;
+
+    // Build update object with only provided fields
+    const updateData: any = { title, slug, content, is_published };
+    if (author !== undefined) {
+      updateData.author = author;
+    }
 
     const { data, error } = await supabase
       .from('posts')
-      .update({ title, slug, content, is_published })
+      .update(updateData)
       .eq('id', id)
       .select()
       .single();
