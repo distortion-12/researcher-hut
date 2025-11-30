@@ -12,7 +12,6 @@ export default function MyArticles() {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState<string | null>(null);
 
   const fetchPosts = async () => {
     if (!user) return;
@@ -32,23 +31,6 @@ export default function MyArticles() {
       setLoading(false);
     }
   }, [user]);
-
-  const handleDelete = async (postId: string, postTitle: string) => {
-    const confirmed = window.confirm(`Are you sure you want to delete "${postTitle}"? This action cannot be undone.`);
-    
-    if (!confirmed) return;
-
-    setDeleting(postId);
-    
-    try {
-      await postsApi.delete(postId);
-      setPosts(posts.filter(post => post.id !== postId));
-    } catch (error: any) {
-      alert('Error deleting post: ' + error.message);
-    }
-    
-    setDeleting(null);
-  };
 
   // Redirect if not logged in
   if (!user && !loading) {
@@ -112,7 +94,7 @@ export default function MyArticles() {
         </div>
         <div className="card-glass rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center hover-float">
           <p className="text-xl sm:text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-400">{pendingPosts.length}</p>
-          <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">Pending</p>
+          <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">Under Review</p>
         </div>
       </div>
 
@@ -142,7 +124,7 @@ export default function MyArticles() {
                       <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{post.title}</h3>
                       {!post.is_approved ? (
                         <span className="glass px-2 py-0.5 sm:py-1 text-xs rounded-full font-medium text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-700/50 whitespace-nowrap">
-                          ⏳ Pending
+                          🔍 Under Review
                         </span>
                       ) : post.is_published ? (
                         <span className="glass px-2 py-0.5 sm:py-1 text-xs rounded-full font-medium text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700/50 whitespace-nowrap">
@@ -168,31 +150,28 @@ export default function MyArticles() {
                   {/* Actions */}
                   <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                     {post.is_approved && (
-                      <Link
-                        href={`/${post.slug}`}
-                        className="glass px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all hover:shadow-md"
-                        title="View"
-                      >
-                        👁️ <span className="hidden sm:inline">View</span>
-                      </Link>
+                      <>
+                        <Link
+                          href={`/${post.slug}`}
+                          className="glass px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg transition-all hover:shadow-md"
+                          title="View"
+                        >
+                          👁️ <span className="hidden sm:inline">View</span>
+                        </Link>
+                        <Link
+                          href={`/my-articles/edit/${post.id}`}
+                          className="glass px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 rounded-lg transition-all hover:shadow-md"
+                          title="Edit"
+                        >
+                          ✏️ <span className="hidden sm:inline">Edit</span>
+                        </Link>
+                      </>
                     )}
                     {!post.is_approved && (
-                      <Link
-                        href={`/my-articles/edit/${post.id}`}
-                        className="glass px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 rounded-lg transition-all hover:shadow-md"
-                        title="Edit"
-                      >
-                        ✏️ <span className="hidden sm:inline">Edit</span>
-                      </Link>
+                      <span className="glass px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 rounded-lg" title="Under Review">
+                        🔍 <span className="hidden sm:inline">Under Review</span>
+                      </span>
                     )}
-                    <button
-                      onClick={() => handleDelete(post.id, post.title)}
-                      disabled={deleting === post.id}
-                      className="glass px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 rounded-lg transition-all hover:shadow-md disabled:opacity-50"
-                      title="Delete"
-                    >
-                      {deleting === post.id ? '⏳' : '🗑️'} <span className="hidden sm:inline">Delete</span>
-                    </button>
                   </div>
                 </div>
               </div>

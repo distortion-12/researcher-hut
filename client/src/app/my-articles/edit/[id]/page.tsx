@@ -9,7 +9,7 @@ import { useAuth } from '@/context/AuthContext';
 
 const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), {
   ssr: false,
-  loading: () => <div className="h-[400px] bg-gray-100 animate-pulse rounded-lg" />,
+  loading: () => <div className="h-[400px] bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />,
 });
 
 export default function EditUserPost() {
@@ -42,9 +42,9 @@ export default function EditUserPost() {
             router.push('/my-articles');
             return;
           }
-          // Check if post is already approved (can't edit approved posts)
-          if (data.is_approved) {
-            alert('You cannot edit approved articles.');
+          // Check if post is still under review (can't edit during review)
+          if (!data.is_approved) {
+            alert('You cannot edit articles while they are under review.');
             router.push('/my-articles');
             return;
           }
@@ -97,6 +97,7 @@ export default function EditUserPost() {
         slug: formData.slug,
         content: formData.content,
       });
+      alert('Article updated successfully!');
       router.push('/my-articles');
     } catch (error: any) {
       alert('Error: ' + error.message);
@@ -107,13 +108,13 @@ export default function EditUserPost() {
   // Redirect if not logged in
   if (!user && !fetching) {
     return (
-      <div className="max-w-2xl mx-auto text-center py-20">
-        <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">✏️ Edit Article</h1>
-          <p className="text-gray-600 mb-6">You need to sign in to edit articles.</p>
+      <div className="max-w-2xl mx-auto text-center py-10 sm:py-16 md:py-20">
+        <div className="card-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 hover-float">
+          <h1 className="text-xl sm:text-2xl font-bold gradient-text mb-3 sm:mb-4">✏️ Edit Article</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base">You need to sign in to edit articles.</p>
           <Link
             href="/login"
-            className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-all"
+            className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:opacity-90 transition-all text-sm sm:text-base liquid-btn shadow-lg"
           >
             Sign In to Continue
           </Link>
@@ -125,9 +126,9 @@ export default function EditUserPost() {
   if (fetching) {
     return (
       <div className="max-w-4xl mx-auto">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
+        <div className="space-y-6">
+          <div className="h-8 glass rounded-xl w-1/3 shimmer"></div>
+          <div className="h-64 glass rounded-2xl shimmer"></div>
         </div>
       </div>
     );
@@ -136,49 +137,41 @@ export default function EditUserPost() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <Link 
           href="/my-articles" 
-          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 mb-4 font-medium"
+          className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 mb-4 font-medium glass px-4 py-2 rounded-lg"
         >
           ← Back to My Articles
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">✏️ Edit Article</h1>
-        <p className="text-gray-500 mt-2">Update your article before it gets approved.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold gradient-text">✏️ Edit Article</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm sm:text-base">Update your published article.</p>
       </div>
 
-      {/* Info Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <p className="text-blue-800 text-sm">
-          <strong>📝 Note:</strong> You can only edit articles that are pending approval. 
-          Once approved, articles cannot be edited.
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         {/* Title Input */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Article Title</label>
+        <div className="card-glass rounded-xl sm:rounded-2xl p-4 sm:p-6">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Article Title</label>
           <input
             type="text"
             required
             placeholder="e.g., The Psychology of Expectations"
-            className="w-full p-4 border border-gray-200 rounded-lg text-xl font-medium focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+            className="w-full p-3 sm:p-4 glass border border-white/20 dark:border-white/10 rounded-xl text-lg sm:text-xl font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
             value={formData.title}
             onChange={handleTitleChange}
           />
         </div>
 
         {/* Slug Input */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">URL Slug</label>
+        <div className="card-glass rounded-xl sm:rounded-2xl p-4 sm:p-6">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">URL Slug</label>
           <div className="flex items-center gap-2">
-            <span className="text-gray-400">researcher.hut/</span>
+            <span className="text-gray-400 dark:text-gray-500 text-sm sm:text-base">researcher.hut/</span>
             <input
               type="text"
               required
               placeholder="my-article-slug"
-              className="flex-1 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              className="flex-1 p-3 glass border border-white/20 dark:border-white/10 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             />
@@ -186,29 +179,26 @@ export default function EditUserPost() {
         </div>
 
         {/* Rich Text Editor */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Article Content</label>
+        <div className="card-glass rounded-xl sm:rounded-2xl p-4 sm:p-6">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Article Content</label>
           <RichTextEditor 
             content={formData.content} 
             onChange={(content) => setFormData({ ...formData, content })} 
           />
-          <p className="text-xs text-gray-400 mt-2">
-            Use the toolbar to format text: headings, bold, italic, colors, lists, links, and more.
-          </p>
         </div>
 
-        {/* Submit Button */}
-        <div className="flex items-center gap-4">
+        {/* Submit Buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           <button
             type="submit"
             disabled={loading}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-all shadow-lg"
+            className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 sm:px-8 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-50 transition-all shadow-lg liquid-btn"
           >
             {loading ? '💾 Saving...' : '💾 Save Changes'}
           </button>
           <Link 
             href="/my-articles"
-            className="text-gray-500 hover:text-gray-700 font-medium"
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium"
           >
             Cancel
           </Link>
