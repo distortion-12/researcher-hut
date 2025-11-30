@@ -156,7 +156,7 @@ export default function EditUserPost() {
             type="text"
             required
             placeholder="e.g., The Psychology of Expectations"
-            className="w-full p-3 sm:p-4 glass border border-white/20 dark:border-white/10 rounded-xl text-lg sm:text-xl font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+            className="w-full p-3 sm:p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl text-lg sm:text-xl font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
             value={formData.title}
             onChange={handleTitleChange}
           />
@@ -171,7 +171,7 @@ export default function EditUserPost() {
               type="text"
               required
               placeholder="my-article-slug"
-              className="flex-1 p-3 glass border border-white/20 dark:border-white/10 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
+              className="flex-1 p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             />
