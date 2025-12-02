@@ -7,6 +7,7 @@ import commentRoutes from './routes/commentRoutes';
 import ratingRoutes from './routes/ratingRoutes';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import storyRoutes from './routes/storyRoutes';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/ratings', ratingRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/stories', storyRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

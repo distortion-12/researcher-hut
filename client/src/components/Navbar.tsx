@@ -88,6 +88,9 @@ export default function Navbar() {
           <Link href="/" className="text-white/80 hover:text-white transition-colors font-medium text-sm lg:text-base">
             Articles
           </Link>
+          <Link href="/stories" className="text-white/80 hover:text-white transition-colors font-medium text-sm lg:text-base">
+            💜 Stories
+          </Link>
           
           {/* Search */}
           <div className="relative" ref={searchRef}>
@@ -319,6 +322,14 @@ export default function Navbar() {
               onClick={() => setShowMobileMenu(false)}
             >
               📰 Articles
+            </Link>
+
+            <Link
+              href="/stories"
+              className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-gray-800 dark:text-white transition-colors"
+              onClick={() => setShowMobileMenu(false)}
+            >
+              💜 Stories
             </Link>
             
             {isArticlePage && (

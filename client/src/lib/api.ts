@@ -99,3 +99,23 @@ export const usersApi = {
     fetchApi<{ allowed: boolean; daysRemaining: number; lastChangedAt?: string }>(`/users/${id}/username-change-status`),
 };
 
+// Stories API
+export const storiesApi = {
+  getAll: (category?: string) => 
+    fetchApi<any[]>(`/stories${category && category !== 'all' ? `?category=${category}` : ''}`),
+  getById: (id: string) => fetchApi<any>(`/stories/${id}`),
+  getUserStories: (userId: string) => fetchApi<any[]>(`/stories/user/${userId}`),
+  create: (data: any) => fetchApi<any>('/stories', { method: 'POST', body: data }),
+  update: (id: string, data: any) => fetchApi<any>(`/stories/${id}`, { method: 'PUT', body: data }),
+  delete: (id: string) => fetchApi<any>(`/stories/${id}`, { method: 'DELETE' }),
+  toggleHelpful: (storyId: string, userId: string) => 
+    fetchApi<{ helpful: boolean }>(`/stories/${storyId}/helpful`, { method: 'POST', body: { user_id: userId } }),
+  checkHelpful: (storyId: string, userId: string) => 
+    fetchApi<{ helpful: boolean }>(`/stories/${storyId}/helpful/${userId}`),
+  getComments: (storyId: string) => fetchApi<any[]>(`/stories/${storyId}/comments`),
+  addComment: (storyId: string, data: any) => 
+    fetchApi<any>(`/stories/${storyId}/comments`, { method: 'POST', body: data }),
+  deleteComment: (commentId: string) => 
+    fetchApi<any>(`/stories/comments/${commentId}`, { method: 'DELETE' }),
+};
+
