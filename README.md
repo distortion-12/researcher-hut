@@ -22,6 +22,14 @@ A modern research article sharing platform where users can read, write, and shar
 - 📝 **User Submissions** - Submit articles for admin review
 - 👤 **Author Credit** - Add your name or Instagram handle for attribution
 
+### Stories Section 💜
+- 📖 **Share Experiences** - Share personal stories, life experiences, and journeys
+- 🤝 **Trauma & Healing** - A safe space to share trauma and recovery stories
+- 🙈 **Anonymous Posting** - Option to share stories anonymously
+- 💜 **Helpful Reactions** - Mark stories as helpful to support others
+- 💬 **Supportive Comments** - Leave encouraging comments (also anonymously)
+- 🏷️ **Categories** - Browse by Life Experience, Trauma & Healing, Personal Journey, Recovery, etc.
+
 ### For Admins
 - 🔐 **Secure OTP Login** - Email-based OTP authentication
 - 📊 **Dashboard** - Manage all articles and pending submissions
@@ -36,6 +44,7 @@ researcher-hut/
 │   ├── src/
 │   │   ├── app/           # App Router pages
 │   │   │   ├── admin/     # Admin dashboard & login
+│   │   │   ├── stories/   # Stories sharing section
 │   │   │   ├── search/    # Search results page
 │   │   │   ├── write/     # Article submission
 │   │   │   └── [slug]/    # Dynamic article pages
@@ -166,6 +175,21 @@ Client runs at `http://localhost:3000`
 | POST | `/api/auth/admin/reset` | Reset credentials |
 | POST | `/api/auth/signup/send-otp` | Send signup OTP |
 | POST | `/api/auth/signup/verify` | Verify signup |
+
+### Stories
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/stories` | Get all stories |
+| GET | `/api/stories/:id` | Get story by ID |
+| GET | `/api/stories/user/:userId` | Get user's stories |
+| POST | `/api/stories` | Create story |
+| PUT | `/api/stories/:id` | Update story |
+| DELETE | `/api/stories/:id` | Delete story |
+| POST | `/api/stories/:id/helpful` | Toggle helpful mark |
+| GET | `/api/stories/:id/helpful/:userId` | Check if user marked helpful |
+| GET | `/api/stories/:id/comments` | Get story comments |
+| POST | `/api/stories/:id/comments` | Add comment |
+| DELETE | `/api/stories/comments/:id` | Delete comment |
 
 ## 🛠 Tech Stack
 
