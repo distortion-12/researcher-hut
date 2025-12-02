@@ -58,6 +58,8 @@ export default function ShareStoryPage() {
         author_name: user.name || user.email?.split('@')[0] || 'User',
       });
 
+      // Show success message and redirect
+      alert('✅ Your story has been submitted for review! It will appear once approved by an admin.');
       router.push('/stories');
     } catch (err: any) {
       setError(err.message || 'Failed to share story');

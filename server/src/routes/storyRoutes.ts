@@ -10,10 +10,20 @@ import {
   checkHelpful,
   getStoryComments,
   addStoryComment,
-  deleteStoryComment
+  deleteStoryComment,
+  getAllStoriesAdmin,
+  getPendingStories,
+  approveStory,
+  rejectStory
 } from '../controllers/storyController';
 
 const router = Router();
+
+// Admin routes (place before :id routes)
+router.get('/admin/all', getAllStoriesAdmin);
+router.get('/admin/pending', getPendingStories);
+router.patch('/admin/:id/approve', approveStory);
+router.delete('/admin/:id/reject', rejectStory);
 
 // Story routes
 router.get('/', getAllStories);

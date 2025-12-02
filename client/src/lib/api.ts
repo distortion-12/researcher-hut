@@ -117,5 +117,10 @@ export const storiesApi = {
     fetchApi<any>(`/stories/${storyId}/comments`, { method: 'POST', body: data }),
   deleteComment: (commentId: string) => 
     fetchApi<any>(`/stories/comments/${commentId}`, { method: 'DELETE' }),
+  // Admin endpoints
+  getAllAdmin: () => fetchApi<any[]>('/stories/admin/all'),
+  getPending: () => fetchApi<any[]>('/stories/admin/pending'),
+  approve: (id: string) => fetchApi<any>(`/stories/admin/${id}/approve`, { method: 'PATCH' }),
+  reject: (id: string) => fetchApi<any>(`/stories/admin/${id}/reject`, { method: 'DELETE' }),
 };
 

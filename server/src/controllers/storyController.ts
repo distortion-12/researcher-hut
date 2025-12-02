@@ -99,14 +99,14 @@ export const createStory = async (req: Request, res: Response) => {
         is_anonymous: is_anonymous || false,
         author_id: validAuthorId,
         author_name: displayName,
-        is_published: true,
+        is_published: false, // Requires admin approval
         helpful_count: 0
       })
       .select()
       .single();
     
     if (error) throw error;
-    res.status(201).json(data);
+    res.status(201).json({ ...data, message: 'Story submitted for approval' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -283,6 +283,75 @@ export const deleteStoryComment = async (req: Request, res: Response) => {
     
     if (error) throw error;
     res.json({ message: 'Comment deleted successfully' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// ============ ADMIN FUNCTIONS ============
+
+// Get all stories (admin) - including unpublished
+export const getAllStoriesAdmin = async (req: Request, res: Response) => {
+  try {
+    const { data, error } = await supabase
+      .from('stories')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    res.json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get pending stories (admin)
+export const getPendingStories = async (req: Request, res: Response) => {
+  try {
+    const { data, error } = await supabase
+      .from('stories')
+      .select('*')
+      .eq('is_published', false)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    res.json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Approve a story (admin)
+export const approveStory = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const { data, error } = await supabase
+      .from('stories')
+      .update({ is_published: true })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    res.json({ message: 'Story approved successfully', story: data });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Reject/delete a story (admin)
+export const rejectStory = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    const { error } = await supabase
+      .from('stories')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    res.json({ message: 'Story rejected and removed' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
