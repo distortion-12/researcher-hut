@@ -76,6 +76,20 @@ export const createStory = async (req: Request, res: Response) => {
     
     const displayName = is_anonymous ? 'Anonymous' : author_name;
     
+    // Check if author exists in users table, if not set to null
+    let validAuthorId = null;
+    if (author_id) {
+      const { data: userExists } = await supabase
+        .from('users')
+        .select('id')
+        .eq('id', author_id)
+        .single();
+      
+      if (userExists) {
+        validAuthorId = author_id;
+      }
+    }
+    
     const { data, error } = await supabase
       .from('stories')
       .insert({
@@ -83,7 +97,7 @@ export const createStory = async (req: Request, res: Response) => {
         content,
         category: category || 'experience',
         is_anonymous: is_anonymous || false,
-        author_id,
+        author_id: validAuthorId,
         author_name: displayName,
         is_published: true,
         helpful_count: 0
