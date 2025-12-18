@@ -20,6 +20,7 @@ app.use(cors({
     'http://localhost:3000', 
     'http://localhost:5000',
     'https://researcher-hut-qabi.onrender.com', // Your actual Frontend URL
+    'https://researcher-hut.vercel.app', // Vercel deployment
     process.env.CLIENT_URL || '' // Fallback from environment variables
   ],
   credentials: true,
