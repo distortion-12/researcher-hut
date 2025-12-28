@@ -89,7 +89,7 @@ export default function Navbar() {
             Articles
           </Link>
           <Link href="/stories" className="text-white/80 hover:text-white transition-colors font-medium text-sm lg:text-base">
-            💜 Stories
+            ❣️ Stories
           </Link>
           
           {/* Search */}
