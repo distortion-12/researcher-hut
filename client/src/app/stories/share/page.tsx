@@ -249,7 +249,7 @@ export default function ShareStoryPage() {
                 </>
               ) : (
                 <>
-                  <span>💜</span>
+                  <span>❣️</span>
                   Share Story
                 </>
               )}

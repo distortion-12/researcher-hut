@@ -247,7 +247,7 @@ export default function StoryDetailPage() {
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-pink-50 dark:hover:bg-pink-900/20'
                 }`}
               >
-                <span className="text-xl">{isHelpful ? '💜' : '🤍'}</span>
+                <span className="text-xl">{isHelpful ? '❣️' : '🤍'}</span>
                 <span>{helpfulCount} found this helpful</span>
               </button>
 

@@ -19,7 +19,7 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Check if user is viewing an article (slug pages that are not special routes)
+  // Check if user is viewing an article page
   const isArticlePage = pathname !== '/' && 
     !pathname.startsWith('/admin') && 
     !pathname.startsWith('/login') && 
@@ -329,7 +329,7 @@ export default function Navbar() {
               className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-gray-800 dark:text-white transition-colors"
               onClick={() => setShowMobileMenu(false)}
             >
-              💜 Stories
+              ❣️ Stories
             </Link>
             
             {isArticlePage && (

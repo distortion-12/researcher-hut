@@ -41,7 +41,7 @@ export default function StoryCard({
           {/* Story Tag */}
           <div className="flex items-center gap-2 mb-2">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
-              💜 Story
+              ❣️ Story
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs">
               {categoryInfo.icon} {categoryInfo.label}

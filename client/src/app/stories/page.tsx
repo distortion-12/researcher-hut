@@ -71,7 +71,7 @@ export default function StoriesPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl font-bold mb-4">
-              💜 Share Your Story
+              ❣️ Share Your Story
             </h1>
             <p className="text-lg sm:text-xl text-white/90 mb-6 max-w-2xl mx-auto">
               A safe space to share your experiences, connect with others, and find support. 
@@ -189,7 +189,7 @@ export default function StoriesPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-1 text-pink-500">
-                        <span>💜</span>
+                        <span>❣️</span>
                         <span className="text-sm font-medium">{story.helpful_count || 0}</span>
                       </div>
                     </div>

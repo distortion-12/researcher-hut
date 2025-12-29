@@ -242,7 +242,7 @@ function AdminDashboardContent() {
               : 'glass text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-white/10'
           }`}
         >
-          💜 Stories
+          ❣️ Stories
         </button>
         <button
           onClick={() => setActiveTab('pending-stories')}
@@ -252,7 +252,7 @@ function AdminDashboardContent() {
               : 'glass text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-white/10'
           }`}
         >
-          💜 Pending Stories
+          ❣️ Pending Stories
           {pendingStories.length > 0 && (
             <span className={`px-1.5 sm:px-2 py-0.5 text-xs rounded-full ${
               activeTab === 'pending-stories' ? 'bg-white text-pink-600' : 'bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300'
@@ -429,7 +429,7 @@ function AdminDashboardContent() {
       {activeTab === 'pending-stories' && (
         <div className="card-glass rounded-xl sm:rounded-2xl overflow-hidden mb-6 sm:mb-8 border border-pink-200/50 dark:border-pink-800/50">
           <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-pink-200/50 dark:border-pink-800/50 bg-pink-50/50 dark:bg-pink-900/20">
-            <h2 className="font-semibold text-pink-700 dark:text-pink-300 text-sm sm:text-base">💜 Pending Stories</h2>
+            <h2 className="font-semibold text-pink-700 dark:text-pink-300 text-sm sm:text-base">❣️ Pending Stories</h2>
             <p className="text-xs sm:text-sm text-pink-600 dark:text-pink-400 mt-1">Review user stories before publishing</p>
           </div>
           
@@ -446,7 +446,7 @@ function AdminDashboardContent() {
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                         <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{story.title}</h3>
                         <span className="px-2 py-0.5 sm:py-1 text-xs rounded-full font-medium bg-pink-100/80 dark:bg-pink-900/50 text-pink-700 dark:text-pink-300">
-                          💜 Story
+                          ❣️ Story
                         </span>
                         <span className="px-2 py-0.5 sm:py-1 text-xs rounded-full font-medium bg-gray-100/80 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400">
                           {story.category}
@@ -498,7 +498,7 @@ function AdminDashboardContent() {
       {activeTab === 'stories' && (
         <div className="card-glass rounded-xl sm:rounded-2xl overflow-hidden mb-6 sm:mb-8 border border-purple-200/50 dark:border-purple-800/50">
           <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-purple-200/50 dark:border-purple-800/50 bg-purple-50/50 dark:bg-purple-900/20">
-            <h2 className="font-semibold text-purple-700 dark:text-purple-300 text-sm sm:text-base">💜 Published Stories</h2>
+            <h2 className="font-semibold text-purple-700 dark:text-purple-300 text-sm sm:text-base">❣️ Published Stories</h2>
             <p className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 mt-1">Manage approved user stories</p>
           </div>
           
@@ -524,7 +524,7 @@ function AdminDashboardContent() {
                       <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm flex flex-wrap gap-1">
                         <span>{story.is_anonymous ? '🙈 Anonymous' : `👤 ${story.author_name}`}</span>
                         <span className="mx-1 sm:mx-2">•</span>
-                        <span>💜 {story.helpful_count} helpful</span>
+                        <span>❣️ {story.helpful_count} helpful</span>
                         <span className="mx-1 sm:mx-2">•</span>
                         <span>📅 {new Date(story.created_at).toLocaleDateString('en-US', {
                           year: 'numeric',
