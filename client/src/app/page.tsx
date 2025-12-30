@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { postsApi, storiesApi } from '@/lib/api';
 import { Post } from '@/types';
 import ArticleCard from '@/components/ArticleCard';
@@ -38,10 +39,12 @@ async function getStories() {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [stories, setStories] = useState<Story[]>([]);
   const [activeTab, setActiveTab] = useState<'articles' | 'stories'>('articles');
   const [loading, setLoading] = useState(true);
+  const [showWriteModal, setShowWriteModal] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -66,7 +69,7 @@ export default function Home() {
       </header>
 
       {/* Tab Navigation */}
-      <div className="flex gap-2 sm:gap-4 max-w-4xl mx-auto mb-8 sm:mb-12 px-4 sm:px-0">
+      <div className="flex gap-2 sm:gap-4 max-w-4xl mx-auto mb-8 sm:mb-12 px-4 sm:px-0 flex-wrap">
         <button
           onClick={() => setActiveTab('articles')}
           className={`flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all duration-300 ${
@@ -80,7 +83,7 @@ export default function Home() {
           <span className="text-xs sm:text-sm font-normal text-opacity-80">({posts.length})</span>
         </button>
         <button
-          onClick={() => setActiveTab('stories')}
+          onClick={() => router.push('/stories')}
           className={`flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all duration-300 ${
             activeTab === 'stories'
               ? 'bg-purple-600 dark:bg-purple-500 text-white shadow-lg'
@@ -90,6 +93,13 @@ export default function Home() {
           <span className="text-lg sm:text-xl">❣️</span>
           <span className="text-sm sm:text-base">Stories</span>
           <span className="text-xs sm:text-sm font-normal text-opacity-80">({stories.length})</span>
+        </button>
+        <button
+          onClick={() => setShowWriteModal(true)}
+          className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all duration-300 bg-green-600 dark:bg-green-500 text-white hover:bg-green-700 dark:hover:bg-green-600 shadow-lg"
+        >
+          <span className="text-lg sm:text-xl">✍️</span>
+          <span className="text-sm sm:text-base">Write a Story or Article</span>
         </button>
       </div>
 
@@ -141,6 +151,53 @@ export default function Home() {
             ))}
           </div>
         )
+      )}
+
+      {/* Write Modal */}
+      {showWriteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                What would you like to write?
+              </h2>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    setShowWriteModal(false);
+                    router.push('/write');
+                  }}
+                  className="flex items-center gap-3 px-6 py-4 bg-indigo-600 dark:bg-indigo-500 text-white rounded-lg font-semibold hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors text-left"
+                >
+                  <span className="text-2xl">📚</span>
+                  <div>
+                    <p className="font-bold">Write an Article</p>
+                    <p className="text-sm text-indigo-100">Share research and insights</p>
+                  </div>
+                </button>
+                <button
+                  onClick={() => {
+                    setShowWriteModal(false);
+                    router.push('/stories/share');
+                  }}
+                  className="flex items-center gap-3 px-6 py-4 bg-purple-600 dark:bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-700 dark:hover:bg-purple-600 transition-colors text-left"
+                >
+                  <span className="text-2xl">❣️</span>
+                  <div>
+                    <p className="font-bold">Share a Story</p>
+                    <p className="text-sm text-purple-100">Tell your personal experience</p>
+                  </div>
+                </button>
+              </div>
+              <button
+                onClick={() => setShowWriteModal(false)}
+                className="mt-4 w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
