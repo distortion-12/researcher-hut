@@ -58,12 +58,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-1.5 sm:mb-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-              <Link href="/forgot-password" className="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
-                Forgot?
-              </Link>
-            </div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Password</label>
             <input
               type="password"
               required
@@ -72,6 +67,11 @@ export default function LoginPage() {
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
+            <div className="mt-2 text-right">
+              <Link href="/forgot-password" className="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </div>
 
           <button
