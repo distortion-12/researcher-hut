@@ -23,7 +23,12 @@ export default function ForgotPasswordPage() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = { error: 'Invalid response from server' };
+      }
 
       if (!response.ok) {
         setError(data.error || 'Failed to send reset email');
