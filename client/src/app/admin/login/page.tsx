@@ -9,7 +9,7 @@ type Step = 'email' | 'otp' | 'credentials';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { sendAdminOtp, verifyAdminOtp, adminEmail } = useAuth();
+  const { sendAdminOtp, verifyAdminOtp } = useAuth();
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [error, setError] = useState('');

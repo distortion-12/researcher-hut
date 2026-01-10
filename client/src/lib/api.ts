@@ -3,17 +3,29 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 interface FetchOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: any;
+  auth?: boolean; // attach admin Authorization header
 }
 
 async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
-  const { method = 'GET', body } = options;
+  const { method = 'GET', body, auth } = options;
   
   const config: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include', // Enable cookies for httpOnly adminToken
   };
+
+  // Attach Authorization header for admin-protected endpoints
+  if (auth) {
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
+      if (token) {
+        (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+      }
+    } catch {}
+  }
 
   if (body) {
     config.body = JSON.stringify(body);
@@ -32,20 +44,20 @@ async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promis
 // Posts API
 export const postsApi = {
   getAll: () => fetchApi<any[]>('/posts'),
-  getAllAdmin: () => fetchApi<any[]>('/posts/admin/all'),
-  getPending: () => fetchApi<any[]>('/posts/admin/pending'),
+  getAllAdmin: () => fetchApi<any[]>('/posts/admin/all'), // Now requires httpOnly cookie
+  getPending: () => fetchApi<any[]>('/posts/admin/pending'), // Now requires httpOnly cookie
   getUserPosts: (userId: string) => fetchApi<any[]>(`/posts/user/${userId}`),
   getBySlug: (slug: string) => fetchApi<any>(`/posts/slug/${slug}`),
-  getById: (id: string) => fetchApi<any>(`/posts/admin/${id}`),
+  getById: (id: string) => fetchApi<any>(`/posts/admin/${id}`), // Now requires httpOnly cookie
   search: (query: string) => fetchApi<any[]>(`/posts/search?q=${encodeURIComponent(query)}`),
-  create: (data: any) => fetchApi<any>('/posts', { method: 'POST', body: data }),
+  create: (data: any) => fetchApi<any>('/posts', { method: 'POST', body: data, auth: true }),
   createUserPost: (data: any) => fetchApi<any>('/posts/user', { method: 'POST', body: data }),
-  update: (id: string, data: any) => fetchApi<any>(`/posts/${id}`, { method: 'PUT', body: data }),
-  delete: (id: string) => fetchApi<any>(`/posts/${id}`, { method: 'DELETE' }),
+  update: (id: string, data: any) => fetchApi<any>(`/posts/${id}`, { method: 'PUT', body: data, auth: true }),
+  delete: (id: string) => fetchApi<any>(`/posts/${id}`, { method: 'DELETE', auth: true }),
   togglePublish: (id: string, is_published: boolean) => 
-    fetchApi<any>(`/posts/${id}/publish`, { method: 'PATCH', body: { is_published } }),
-  approvePost: (id: string) => fetchApi<any>(`/posts/${id}/approve`, { method: 'PATCH' }),
-  rejectPost: (id: string) => fetchApi<any>(`/posts/${id}/reject`, { method: 'DELETE' }),
+    fetchApi<any>(`/posts/${id}/publish`, { method: 'PATCH', body: { is_published }, auth: true }),
+  approvePost: (id: string) => fetchApi<any>(`/posts/${id}/approve`, { method: 'PATCH', auth: true }),
+  rejectPost: (id: string) => fetchApi<any>(`/posts/${id}/reject`, { method: 'DELETE', auth: true }),
 };
 
 // Comments API
@@ -72,6 +84,8 @@ export const authApi = {
     fetchApi<any>('/auth/admin/send-otp', { method: 'POST', body: { email } }),
   verifyAdminLogin: (data: any) => 
     fetchApi<any>('/auth/admin/verify', { method: 'POST', body: data }),
+  adminLogout: () =>
+    fetchApi<any>('/auth/admin/logout', { method: 'POST' }),
   sendResetOtp: (email: string) => 
     fetchApi<any>('/auth/admin/reset/send-otp', { method: 'POST', body: { email } }),
   resetCredentials: (data: any) => 
@@ -117,7 +131,7 @@ export const storiesApi = {
     fetchApi<any>(`/stories/${storyId}/comments`, { method: 'POST', body: data }),
   deleteComment: (commentId: string) => 
     fetchApi<any>(`/stories/comments/${commentId}`, { method: 'DELETE' }),
-  // Admin endpoints
+  // Admin endpoints (now require httpOnly cookie)
   getAllAdmin: () => fetchApi<any[]>('/stories/admin/all'),
   getPending: () => fetchApi<any[]>('/stories/admin/pending'),
   approve: (id: string) => fetchApi<any>(`/stories/admin/${id}/approve`, { method: 'PATCH' }),

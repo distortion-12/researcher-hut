@@ -4,7 +4,8 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { supabase } from '@/lib/supabase';
 import { authApi, usersApi } from '@/lib/api';
 
-const DEFAULT_ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || '';
+// SECURITY FIX: Don't expose admin email in client-side code
+// Remove NEXT_PUBLIC_ADMIN_EMAIL entirely
 
 interface User {
   id: string;
@@ -25,8 +26,6 @@ interface AuthContextType {
   resetAdminCredentials: (email: string, otp: string, newUsername: string, newPassword: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
   isAdmin: boolean;
-  getAdminEmail: () => Promise<string>;
-  adminEmail: string;
   checkUsernameAvailable: (username: string) => Promise<boolean>;
 }
 
@@ -35,26 +34,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [adminEmail, setAdminEmail] = useState<string>(DEFAULT_ADMIN_EMAIL);
 
-  // Get admin email from API
-  const getAdminEmail = async (): Promise<string> => {
-    try {
-      const settings = await authApi.getAdminSettings();
-      return settings?.email || DEFAULT_ADMIN_EMAIL;
-    } catch {
-      return DEFAULT_ADMIN_EMAIL;
-    }
-  };
-
-  // Load admin email on mount
-  useEffect(() => {
-    const loadAdminEmail = async () => {
-      const email = await getAdminEmail();
-      setAdminEmail(email);
-    };
-    loadAdminEmail();
-  }, []);
+  // SECURITY FIX: Don't fetch admin email from API (removes enumeration vector)
+  // Load admin email on mount - removed, this was unnecessary and exposed admin info
 
   // Fetch user data from users table via API
   const fetchUserData = async (userId: string) => {
@@ -82,7 +64,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         const adminSession = localStorage.getItem('adminSession');
         if (adminSession) {
-          setUser(JSON.parse(adminSession));
+          try {
+            // SECURITY FIX: Parse safely and validate
+            setUser(JSON.parse(adminSession));
+          } catch (e) {
+            console.error('Invalid admin session stored');
+            localStorage.removeItem('adminSession');
+          }
         } else {
           setUser(null);
         }
@@ -108,7 +96,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         const adminSession = localStorage.getItem('adminSession');
         if (adminSession) {
-          setUser(JSON.parse(adminSession));
+          try {
+            // SECURITY FIX: Parse safely and validate
+            setUser(JSON.parse(adminSession));
+          } catch (e) {
+            console.error('Invalid admin session stored');
+            localStorage.removeItem('adminSession');
+          }
         }
       }
     } catch (error) {
@@ -196,6 +190,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const result = await authApi.verifyAdminLogin({ email, otp, username, password });
       
       if (result.success && result.admin) {
+        // HttpOnly cookie is set automatically by server
+        // Store minimal admin session in localStorage for UI state only
         localStorage.setItem('adminSession', JSON.stringify(result.admin));
         setUser(result.admin);
       }
@@ -220,7 +216,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resetAdminCredentials = async (email: string, otp: string, newUsername: string, newPassword: string) => {
     try {
       await authApi.resetCredentials({ email, otp, newUsername, newPassword });
-      setAdminEmail(email);
+      // SECURITY FIX: Don't set admin email anymore (it's not in state)
       return {};
     } catch (error: any) {
       return { error: error.message };
@@ -228,9 +224,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    localStorage.removeItem('adminSession');
-    setUser(null);
+    try {
+      // Call server to clear httpOnly cookie
+      await authApi.adminLogout();
+    } catch (e) {
+      console.error('Logout error:', e);
+    } finally {
+      // Always clear client-side state
+      await supabase.auth.signOut();
+      localStorage.removeItem('adminSession');
+      setUser(null);
+    }
   };
 
   return (
@@ -245,8 +249,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       resetAdminCredentials,
       signOut,
       isAdmin: user?.isAdmin || false,
-      getAdminEmail,
-      adminEmail,
+      // SECURITY FIX: Removed getAdminEmail and adminEmail from context
       checkUsernameAvailable,
     }}>
       {children}

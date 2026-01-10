@@ -9,7 +9,7 @@ type Step = 'email' | 'otp' | 'newCredentials';
 
 export default function ResetCredentialsPage() {
   const router = useRouter();
-  const { sendResetOtp, resetAdminCredentials, adminEmail } = useAuth();
+  const { sendResetOtp, resetAdminCredentials } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -145,8 +145,6 @@ export default function ResetCredentialsPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              {adminEmail && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Current admin: {adminEmail}</p>}
-              {!adminEmail && <p className="text-xs text-orange-500 dark:text-orange-400 mt-1">First time setup - enter your email to become admin</p>}
             </div>
 
             <button

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { adminAuthMiddleware } from '../middleware/auth';
 import {
   getAllStories,
   getStoryById,
@@ -19,11 +20,11 @@ import {
 
 const router = Router();
 
-// Admin routes (place before :id routes)
-router.get('/admin/all', getAllStoriesAdmin);
-router.get('/admin/pending', getPendingStories);
-router.patch('/admin/:id/approve', approveStory);
-router.delete('/admin/:id/reject', rejectStory);
+// Admin routes (protected with JWT, place before :id routes)
+router.get('/admin/all', adminAuthMiddleware, getAllStoriesAdmin);
+router.get('/admin/pending', adminAuthMiddleware, getPendingStories);
+router.patch('/admin/:id/approve', adminAuthMiddleware, approveStory);
+router.delete('/admin/:id/reject', adminAuthMiddleware, rejectStory);
 
 // Story routes
 router.get('/', getAllStories);

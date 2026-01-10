@@ -15,6 +15,7 @@ import {
   rejectPost,
   searchPosts,
 } from '../controllers/postController';
+import { adminAuthMiddleware } from '../middleware/auth';
 
 const router = Router();
 
@@ -27,15 +28,15 @@ router.get('/slug/:slug', getPostBySlug);
 router.get('/user/:userId', getUserPosts);
 router.post('/user', createUserPost);
 
-// Admin routes
-router.get('/admin/all', getAllPosts);
-router.get('/admin/pending', getPendingPosts);
-router.get('/admin/:id', getPostById);
-router.post('/', createPost);
-router.put('/:id', updatePost);
-router.delete('/:id', deletePost);
-router.patch('/:id/publish', togglePublish);
-router.patch('/:id/approve', approvePost);
-router.delete('/:id/reject', rejectPost);
+// Admin routes (protected with JWT)
+router.get('/admin/all', adminAuthMiddleware, getAllPosts);
+router.get('/admin/pending', adminAuthMiddleware, getPendingPosts);
+router.get('/admin/:id', adminAuthMiddleware, getPostById);
+router.post('/', adminAuthMiddleware, createPost);
+router.put('/:id', adminAuthMiddleware, updatePost);
+router.delete('/:id', adminAuthMiddleware, deletePost);
+router.patch('/:id/publish', adminAuthMiddleware, togglePublish);
+router.patch('/:id/approve', adminAuthMiddleware, approvePost);
+router.delete('/:id/reject', adminAuthMiddleware, rejectPost);
 
 export default router;
