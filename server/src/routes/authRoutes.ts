@@ -9,6 +9,8 @@ import {
   verifyUserSignupOtp,
   sendEmailChangeOtp,
   verifyEmailChange,
+  sendUserPasswordResetOtp,
+  resetUserPassword,
 } from '../controllers/authController';
 
 const router = Router();
@@ -27,5 +29,9 @@ router.post('/signup/verify', verifyUserSignupOtp);
 // Email change routes
 router.post('/email/send-otp', sendEmailChangeOtp);
 router.post('/email/verify', verifyEmailChange);
+
+// Password reset routes
+router.post('/password/send-reset-otp', sendUserPasswordResetOtp);
+router.post('/password/reset', resetUserPassword);
 
 export default router;
